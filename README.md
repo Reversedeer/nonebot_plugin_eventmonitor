@@ -35,8 +35,8 @@ _✨ 基于NoneBot2实现的 监测QQ群事件 插件 ✨_
 nb plugin install nonebot_plugin_eventmonitor
 ```
 
-<details>
-    <summary><h3>pip</h3></summary>
+<details><summary><h3>pip</h3></summary>
+
 
 ```
 pip install nonebot-plugin-eventmonitor
@@ -51,8 +51,8 @@ pip install nonebot-plugin-eventmonitor
 
 </details>
 
-<details>
-    <summary><h3>git clone</h3></summary>
+<details><summary><h3>git clone</h3></summary>
+
 ```
 git clone https://github.com/Reversedeer/nonebot_piugin_eventmonitor.git
 ```
@@ -85,7 +85,7 @@ pip install --upgrade nonebot-plugin-eventmonitor
 
 - v0.0.1
   - 修复了大量的bug
-</details>
+  </details>
 
 ## 关于 ISSUE
 
