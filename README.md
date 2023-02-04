@@ -11,7 +11,7 @@ _✨ 基于NoneBot2实现的 监测QQ群事件 插件 ✨_
 </div>
 
 ## 介绍：
-> ⚠️插件支持nonebot=>rc1
+> ⚠️不支持python 3.10
 >
 > 监测群组的以下变动事件：
 >
@@ -83,7 +83,7 @@ pip install --upgrade nonebot-plugin-eventmonitor
 <details>
     <summary><h2>更新日志</h2></summary>
 
-- v0.0.1
+- v0.0.3
   - 修复了大量的bug
   </details>
 
