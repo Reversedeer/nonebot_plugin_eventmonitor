@@ -104,8 +104,7 @@ async def user_welcome(bot: Bot, event: GroupIncreaseNoticeEvent, state: T_State
 @admin.handle()
 async def admin_chance(bot: Bot, event: GroupAdminNoticeEvent, state: T_State):
     rely_msg = admin_change(event.sub_type, event.user_id)
-    await admin.finish(message=Message(rely_msg))
-
+    await bot.finish(message=Message(rely_msg))
 
 @red_packet.handle()
 async def hongbao(bot: Bot, event: LuckyKingNotifyEvent, state: T_State):

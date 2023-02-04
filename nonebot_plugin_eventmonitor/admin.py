@@ -1,7 +1,7 @@
 from datetime import datetime
 
 # 机器人QQ号
-bot_qq = 2311406250
+bot_qq = 3035332291
 # 开发者QQ号
 super_qq = [2782383376]
 # 退群消息

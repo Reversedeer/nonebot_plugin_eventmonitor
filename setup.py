@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="nonebot_plugin_eventmonitor",
-    version="0.0.3",
+    version="0.0.6",
     author="schwarzwald",
     description="监控群事件的插件，支持戳一戳，成员变动，群荣誉变化等提示",
     long_description=long_description,
@@ -20,8 +20,8 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     packages=setuptools.find_packages(),
-    python_requires=">=3.8, <3.10",
+    python_requires=">=3.8",
     install_requires = [
-        'nonebot2>=2.0.0rc1',
+        'nonebot2>=2.0.0rc1', 'nonebot-adapter-onebot>=2.2.0'
     ]
 )
