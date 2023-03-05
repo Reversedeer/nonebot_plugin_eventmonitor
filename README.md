@@ -11,8 +11,6 @@ _✨ 基于NoneBot2实现的 监测QQ群事件 插件 ✨_
 </div>
 
 ## 介绍：
-> ⚠️支持nonebot>=rc1
->
 > 监测群组的以下变动事件：
 >
 > 群成员增加、减少时，自动发送通知
@@ -25,7 +23,7 @@ _✨ 基于NoneBot2实现的 监测QQ群事件 插件 ✨_
 >
 > 群红包被抢完时，自动发送红包运气王
 >
-> 群成员荣誉变更时，发送变更通知(测试时没反应QwQ)
+> 群成员荣誉变更时，发送变更通知
 
 ## 安装方式
 
@@ -65,23 +63,27 @@ git clone https://github.com/Reversedeer/nonebot_piugin_eventmonitor.git
 pip install --upgrade nonebot-plugin-eventmonitor
 ```
 
-## 配置说明
+## 配置
 
-> 1.github下载后的文件夹`nonebot_plugin_eventmonitor`放在`src/plugins/`目录下
+在bot目录对应的.env.*文件中添加（SUPERUSERS应该都填了吧）
 
-> 2.修改`admin.py`
-> > bot_qq：改为机器人的QQ号
-> > super_qq：添加或新增管理员的QQ号
+|   config   | type | default |         example          |                    usage                    |
+| :--------: | :--: | :-----: | :----------------------: | :-----------------------------------------: |
+|   bot_qq   | int  |   寄    |     bot_qq=123456789     |    bot群聊变动和群荣誉变化时判断（必填）    |
+| SUPERUSERS | int  |   寄    | SUPERUSERS=["123456789"] | nonebot超级管理员，用于判断是否为主人(必填) |
+|  bot_name  | int  |   寄    |      bot_name=AI-Md      |               bot的昵称(必填)               |
+|  cd_time   | int  |    0    |        cd_time=10        |             戳一戳的cd（选填）              |
 
-> 3.修改`chuoyichuo.py`
-> > bot_name：设置机器人的昵称
-
-> 4.修改`rongyu.py`
-> > bot_qq：改为机器人的QQ号
-> > super_qq：添加或新增管理员的QQ号
+戳一戳的cd默认为0即没有cd
 
 <details>
     <summary><h2>更新日志</h2></summary>
+
+- v0.1.0
+
+  - 抛弃原有的配置模式（具体看"配置"）
+  - 给戳一戳加了cd（本人觉得功能鸡肋）
+  - 修复管理员变动时API报错问题[#issue1](https://github.com/Reversedeer/nonebot_plugin_eventmonitor/issues/1)
 
 - v0.0.6
   - 修复了大量的bug
