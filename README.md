@@ -69,7 +69,7 @@ pip install --upgrade nonebot-plugin-eventmonitor
 
 |   config   | type | default |         example          |                    usage                    |
 | :--------: | :--: | :-----: | :----------------------: | :-----------------------------------------: |
-|   bot_qq   | int  |   寄    |     bot_qq=123456789     |    bot群聊变动和群荣誉变化时判断（必填）    |
+|   bot_qq   | int  |   寄    |     bot_qq=123456789     |           bot自身的群荣誉变化时判断（必填）    |
 | SUPERUSERS | int  |   寄    | SUPERUSERS=["123456789"] | nonebot超级管理员，用于判断是否为主人(必填) |
 |  bot_name  | int  |   寄    |      bot_name=AI-Md      |               bot的昵称(必填)               |
 |  cd_time   | int  |    0    |        cd_time=10        |             戳一戳的cd（选填）              |
