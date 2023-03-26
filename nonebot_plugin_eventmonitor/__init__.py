@@ -6,7 +6,6 @@ from nonebot.adapters.onebot.v11 import (
     Bot, Event, Message,
     PokeNotifyEvent,
     HonorNotifyEvent,
-    GroupMessageEvent,
     GroupUploadNoticeEvent,
     GroupDecreaseNoticeEvent,
     GroupIncreaseNoticeEvent,
@@ -18,13 +17,6 @@ from .stamp import *
 from .honour import *
 from .admin import *
 
-
-try:
-    cd_time = nonebot.get_driver().config.cd_time       # 从配置文件中读取cd_time
-except:
-    cd_time = 0      		# cd默认值
-
-chuo_cd_dir = {}
 
 # 获取戳一戳状态
 async def _is_poke(event: Event, state: T_State) -> bool:
@@ -81,16 +73,16 @@ red_packet = on_notice(Rule(_is_red_packet), priority=50, block=True)
 async def send_chuo(bot: Bot, event: Event, state: T_State):
     if bot_name == "寄":
         await chuo.finish("请先配置bot_name")
-    uid = event.get_user_id()    # 获取用户id
+    uid = event.get_user_id()                                         # 获取用户id
     try:
-        cd = event.time - chuo_cd_dir[uid]                             # 计算cd
+        cd = event.time - chuo_CD_dir[uid]                             # 计算cd
     except KeyError:
-        cd = cd_time + 1                                        # 没有记录则cd为cd_time+1
+        cd = chuo_cd + 1                                        # 没有记录则cd为cd_time+1
     if (
-        cd > cd_time
+        cd > chuo_cd
         or event.get_user_id() in nonebot.get_driver().config.superusers
     ):                                                                     # 记录cd
-        chuo_cd_dir.update({uid: event.time})
+        chuo_CD_dir.update({uid: event.time})
     rely_msg = chuo_send_msg()
     await chuo.finish(message=Message(rely_msg))
 
