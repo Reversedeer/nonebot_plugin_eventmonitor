@@ -69,18 +69,27 @@ pip install --upgrade nonebot-plugin-eventmonitor
 
 |   config   | type | default |         example          |                    usage                    |
 | :--------: | :--: | :-----: | :----------------------: | :-----------------------------------------: |
-|   bot_qq   | int  |   寄    |     bot_qq=123456789     |           bot自身的群荣誉变化时判断（必填）    |
+|   bot_qq   | int  |   寄    |    bot_qq = 123456789    |    bot群聊变动和群荣誉变化时判断（必填）    |
 | SUPERUSERS | int  |   寄    | SUPERUSERS=["123456789"] | nonebot超级管理员，用于判断是否为主人(必填) |
-|  bot_name  | int  |   寄    |      bot_name=AI-Md      |               bot的昵称(必填)               |
-|  cd_time   | int  |    0    |        cd_time=10        |             戳一戳的cd（选填）              |
+|  bot_name  | str  |   寄    |    bot_name = "AI-Md"    |               bot的昵称(必填)               |
+|  chuo_cd   | int  |    0    |       chuo_cd = 10       |             戳一戳的cd（选填）              |
 
 戳一戳的cd默认为0即没有cd
 
 <details>
     <summary><h2>更新日志</h2></summary>
 
-- v0.1.0
+- v0.1.2
 
+  - 增加了戳一戳的文案
+  
+  - 修改一些不重要的bug
+
+- v0.1.1
+
+  - 好像改了什么..忘了...
+
+- v0.1.0
   - 抛弃原有的配置模式（具体看"配置"）
   - 给戳一戳加了cd（本人觉得功能鸡肋）
   - 修复管理员变动时API报错问题[#issue1](https://github.com/Reversedeer/nonebot_plugin_eventmonitor/issues/1)
