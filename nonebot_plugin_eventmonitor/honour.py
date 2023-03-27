@@ -7,7 +7,7 @@ except:
     bot_qq = "寄"
 
 try:
-    super_qq = nonebot.get_driver().config.superusers
+    super_qq = nonebot.get_driver().config.SUPERUSERS
 except:
     super_qq = "寄"
 
