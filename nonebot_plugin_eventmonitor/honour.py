@@ -12,7 +12,6 @@ except:
     super_qq = "寄"
 
 
-
 def monitor_rongyu(honor_type, user_id):
     rely = ""
 
