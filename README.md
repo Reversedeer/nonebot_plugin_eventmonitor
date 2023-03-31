@@ -79,10 +79,13 @@ pip install --upgrade nonebot-plugin-eventmonitor
 <details>
     <summary><h2>更新日志</h2></summary>
 
-- v0.1.2
+- v0.1.3
 
-  - 增加了戳一戳的文案
+  - 修复配置文件bug
   
+- v0.1.2
+  - 增加了戳一戳的文案
+
   - 修改一些不重要的bug
 
 - v0.1.1
