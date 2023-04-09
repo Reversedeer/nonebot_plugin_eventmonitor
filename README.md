@@ -10,7 +10,7 @@ _✨ 基于NoneBot2实现的 监测QQ群事件 插件 ✨_
 
 </div>
 
-## 介绍：
+## 介绍：点点Star✨
 > 监测群组的以下变动事件：
 >
 > 群成员增加、减少时，自动发送通知
@@ -34,15 +34,9 @@ nb plugin install nonebot_plugin_eventmonitor
 ```
 
 <details><summary><h3>pip</h3></summary>
-
-
 ```
 pip install nonebot-plugin-eventmonitor
 ```
-打开 nonebot2 项目的 `bot.py` 文件, 在其中写入
-
-    nonebot.load_plugin("nonebot_plugin_eventmonitor")
-
 在’pyproject.toml‘文件中写入
 
     "nonebot_plugin_eventmonitor"
@@ -65,38 +59,32 @@ pip install --upgrade nonebot-plugin-eventmonitor
 
 ## 配置
 
-在bot目录对应的.env.*文件中添加（SUPERUSERS应该都填了吧）
-
-|   config   | type | default |         example          |                    usage                    |
-| :--------: | :--: | :-----: | :----------------------: | :-----------------------------------------: |
-|   bot_qq   | int  |   寄    |    bot_qq = 123456789    |    bot群聊变动和群荣誉变化时判断（必填）    |
-| SUPERUSERS | int  |   寄    | SUPERUSERS=["123456789"] | nonebot超级管理员，用于判断是否为主人(必填) |
-|  bot_name  | str  |   寄    |    bot_name = "AI-Md"    |               bot的昵称(必填)               |
-|  chuo_cd   | int  |    0    |       chuo_cd = 10       |             戳一戳的cd（选填）              |
-
-戳一戳的cd默认为0即没有cd
+| config  | type | default |   example    |       usage        |
+| :-----: | :--: | :-----: | :----------: | :----------------: |
+| chuo_cd | int  |    0    | chuo_cd = 10 | 戳一戳的cd（选填） |
 
 <details>
     <summary><h2>更新日志</h2></summary>
 
-- v0.1.3
+- v0.1.5
 
-  - 修复配置文件bug
+  - 优化配置文件 [#issue6](https://github.com/Reversedeer/nonebot_plugin_eventmonitor/issues/6)
+  - 删除冗余代码
+  - 修复获取superusers数值bug
   
+- v0.1.3
+  - 修复配置文件bug
 - v0.1.2
   - 增加了戳一戳的文案
 
-  - 修改一些不重要的bug
-
+  - 修改一些bug
 - v0.1.1
 
   - 好像改了什么..忘了...
-
 - v0.1.0
-  - 抛弃原有的配置模式（具体看"配置"）
+  - 抛弃原有的配置模式
   - 给戳一戳加了cd（本人觉得功能鸡肋）
   - 修复管理员变动时API报错问题[#issue1](https://github.com/Reversedeer/nonebot_plugin_eventmonitor/issues/1)
-
 - v0.0.6
   - 修复了大量的bug
   </details>
