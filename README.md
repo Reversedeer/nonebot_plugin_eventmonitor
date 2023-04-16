@@ -34,10 +34,10 @@ nb plugin install nonebot_plugin_eventmonitor
 ```
 
 <details><summary><h3>pip</h3></summary>
-```
-pip install nonebot-plugin-eventmonitor
-```
+
+    pip install nonebot-plugin-eventmonitor
 在’pyproject.toml‘文件中写入
+
 
     "nonebot_plugin_eventmonitor"
 
