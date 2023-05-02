@@ -9,7 +9,8 @@ from nonebot.adapters.onebot.v11 import (
     GroupDecreaseNoticeEvent,
     GroupIncreaseNoticeEvent,
     GroupAdminNoticeEvent,
-    LuckyKingNotifyEvent
+    LuckyKingNotifyEvent,
+    MessageSegment
 )
 
 from .stamp import chuo_send_msg
@@ -88,10 +89,14 @@ async def send_rongyu(event: HonorNotifyEvent, bot: Bot):
 
 @files.handle()                                                                         #上传群文件
 async def handle_first_receive(event: GroupUploadNoticeEvent):
-    rely = f'[CQ:at,qq={event.user_id}]\n' \
-           f'[CQ:image,file=https://q4.qlogo.cn/headimg_dl?dst_uin={event.user_id}&spec=640]' \
-           f'\n 上传了新文件，感谢你一直为群里做贡献喵~[CQ:face,id=175]'
-    await files.finish(message=Message(rely))
+    # rely = f'[CQ:at,qq={event.user_id}]\n' \
+    #        f'[CQ:image,file=https://q4.qlogo.cn/headimg_dl?dst_uin={event.user_id}&spec=640]' \
+    #        f'\n 上传了新文件，感谢你一直为群里做贡献喵~[CQ:face,id=175]'
+    # await files.finish(message=Message(rely))
+    rely = MessageSegment.at(event.user_id) + '\n' + \
+           MessageSegment.image(f'https://q4.qlogo.cn/headimg_dl?dst_uin={event.user_id}&spec=640') + \
+           '\n 上传了新文件，感谢你一直为群里做贡献喵~' + MessageSegment.face(175)
+    await files.finish(message=rely)
 
 
 @del_user.handle()                                                                      #退群事件
@@ -115,5 +120,7 @@ async def admin_chance(event: GroupAdminNoticeEvent, bot: Bot):
 
 @red_packet.handle()                                                                    #红包运气王
 async def hongbao(event: LuckyKingNotifyEvent):
-    rely_msg = f"[CQ:at,qq={event.user_id}]\n本次红包运气王为：[CQ:at,qq={event.target_id}]"
-    await red_packet.finish(message=Message(rely_msg))
+    # rely_msg = f"[CQ:at,qq={event.user_id}]\n本次红包运气王为：[CQ:at,qq={event.target_id}]"
+    # await red_packet.finish(message=Message(rely_msg))
+    rely_msg = MessageSegment.at(event.user_id) + "\n" + "本次红包运气王为：" + MessageSegment.at(event.target_id)
+    await red_packet.finish(message=rely_msg)
