@@ -1,9 +1,8 @@
 import nonebot
-from typing import Tuple
 from nonebot.rule import Rule
-from nonebot.plugin import on_notice
-from nonebot.matcher import Matcher
-from nonebot.params import RegexGroup
+from nonebot.plugin import on_notice, on_command
+from nonebot.permission import SUPERUSER
+from nonebot.adapters.onebot.v11.permission import GROUP_OWNER, GROUP_ADMIN
 from nonebot.adapters.onebot.v11 import (
     Bot, Event, Message,
     PokeNotifyEvent,
@@ -60,11 +59,14 @@ group_admin = on_notice(Rule(_is_admin_change), priority=50, block=True)
 # 红包
 red_packet = on_notice(Rule(_is_red_packet), priority=50, block=True)
 
-
+switch_command = on_command("开启", aliases={"关闭"}, permission=SUPERUSER | GROUP_ADMIN | GROUP_OWNER,
+                                priority=1, block=True)
 
 @driver.on_bot_connect
 async def _():
     await init(g_temp)
+    await config_check()
+     
 
 @chuo.handle()
 async def send_chuo(event: PokeNotifyEvent):
@@ -133,23 +135,37 @@ async def hongbao(event: LuckyKingNotifyEvent):
     await red_packet.finish(message=rely_msg)
 
 
-# async def open_module(
-#     matcher: Matcher, event: GroupMessageEvent, args: Tuple = RegexGroup()
-# ) -> None:
-#     """开关"""
-#     gid = str(event.group_id)
-#     command: str = args[0]
-#         if "开启" in command or "开始" in command:
-#             if gid in g_temp:
-#                 g_temp[gid]["allow"] = True
-#             else:
-#                 g_temp.update({gid: {"allow": True}})
-#             write_group_data()
-#             await matcher.finish("功能已开启喵")
-#         elif "禁止" in command or "关闭" in command:
-#             if gid in g_temp:
-#                 g_temp[gid]["allow"] = False
-#             else:
-#                 g_temp.update({gid: {"allow": False}})
-#             write_group_data()
-#             await matcher.finish("功能已禁用喵")
+def get_command_type(command: str) -> str:
+    """根据指令内容获取开关类型"""
+    return next(
+        (
+            key
+            for key, keywords in path.items()
+            if any(keyword in command for keyword in keywords)
+        ),
+        "",
+    )
+
+@switch_command.handle()
+async def switch(event: GroupMessageEvent):
+    # 获取开关指令的参数，即用户输入的指令内容
+    command = str(event.get_message()).strip()
+    # 获取群组ID
+    gid = str(event.group_id)
+    # 判断指令是否包含"开启"或"关闭"关键字
+    if "开启" in command or "开始" in command:
+        if key := get_command_type(command):
+            g_temp[gid][key] = True
+            write_group_data(g_temp)
+            name = get_function_name(key)
+            await switch_command.finish(f"{name}功能已开启喵")
+    elif "禁止" in command or "关闭" in command:
+        if key := get_command_type(command):
+            g_temp[gid][key] = False
+            write_group_data(g_temp)
+            name = get_function_name(key)
+            await switch_command.finish(f"{name}功能已禁用喵")
+
+def get_function_name(key: str) -> str:
+    """根据关键词获取对应功能名称"""
+    return path[key][0]
