@@ -1,6 +1,9 @@
 import nonebot
+from typing import Tuple
 from nonebot.rule import Rule
 from nonebot.plugin import on_notice
+from nonebot.matcher import Matcher
+from nonebot.params import RegexGroup
 from nonebot.adapters.onebot.v11 import (
     Bot, Event, Message,
     PokeNotifyEvent,
@@ -9,7 +12,9 @@ from nonebot.adapters.onebot.v11 import (
     GroupDecreaseNoticeEvent,
     GroupIncreaseNoticeEvent,
     GroupAdminNoticeEvent,
-    LuckyKingNotifyEvent
+    LuckyKingNotifyEvent,
+    MessageSegment,
+    GroupMessageEvent
 )
 
 from .stamp import chuo_send_msg
@@ -21,27 +26,21 @@ from .utils import *
 # 获取戳一戳状态
 async def _is_poke(event: Event) -> bool:
     return isinstance(event, PokeNotifyEvent) and event.is_tome()
-
 # 获取群荣誉变更
 async def _is_rongyu(event: Event) -> bool:
     return isinstance(event, HonorNotifyEvent)
-
 # 获取文件上传
 async def _is_checker(event: Event) -> bool:
     return isinstance(event, GroupUploadNoticeEvent)
-
 # 群成员减少
 async def _is_del_user(event: Event) -> bool:
     return isinstance(event, GroupDecreaseNoticeEvent)
-
 # 群成员增加
 async def _is_add_user(event: Event) -> bool:
     return isinstance(event, GroupIncreaseNoticeEvent)
-
 # 管理员变动
 async def _is_admin_change(event: Event) -> bool:
     return isinstance(event, GroupAdminNoticeEvent)
-
 # 红包运气王
 async def _is_red_packet(event: Event) -> bool:
     return isinstance(event, LuckyKingNotifyEvent)
@@ -63,8 +62,14 @@ red_packet = on_notice(Rule(_is_red_packet), priority=50, block=True)
 
 
 
+@driver.on_bot_connect
+async def _():
+    await init(g_temp)
+
 @chuo.handle()
-async def send_chuo(event: Event):
+async def send_chuo(event: PokeNotifyEvent):
+    if not (await check_chuo(g_temp, str(event.group_id))):
+        await chuo.finish(notAllow, at_sender=True)
     uid = event.get_user_id()                                                       # 获取用户id
     try:
         cd = event.time - chuo_CD_dir[uid]                                          # 计算cd
@@ -78,30 +83,35 @@ async def send_chuo(event: Event):
     rely_msg = await chuo_send_msg()
     await chuo.finish(message=Message(rely_msg))
 
-
 @qrongyu.handle()                                                                       #群荣誉变化
 async def send_rongyu(event: HonorNotifyEvent, bot: Bot):
+    if not (await check_honor(g_temp, str(event.group_id))):
+        await qrongyu.finish(notAllow, at_sender=True)
     bot_qq = int(bot.self_id)
     rely_msg = await monitor_rongyu(event.honor_type, event.user_id, bot_qq)
     await qrongyu.finish(message=Message(rely_msg))
 
-
 @files.handle()                                                                         #上传群文件
 async def handle_first_receive(event: GroupUploadNoticeEvent):
-    rely = f'[CQ:at,qq={event.user_id}]\n' \
-           f'[CQ:image,file=https://q4.qlogo.cn/headimg_dl?dst_uin={event.user_id}&spec=640]' \
-           f'\n 上传了新文件，感谢你一直为群里做贡献喵~[CQ:face,id=175]'
-    await files.finish(message=Message(rely))
-
+    if not (await check_file(g_temp, str(event.group_id))):
+        await files.finish(notAllow, at_sender=True)
+    rely = MessageSegment.at(event.user_id) + '\n' + \
+           MessageSegment.image(f'https://q4.qlogo.cn/headimg_dl?dst_uin={event.user_id}&spec=640') + \
+           '\n 上传了新文件，感谢你一直为群里做贡献喵~' + MessageSegment.face(175)
+    await files.finish(message=rely)
 
 @del_user.handle()                                                                      #退群事件
 async def user_bye(event: GroupDecreaseNoticeEvent):
+    if not (await check_del_user(g_temp, str(event.group_id))):
+        await del_user.finish(notAllow, at_sender=True)
     rely_msg = await  del_user_bye(event.time, event.user_id)
     await del_user.finish(message=Message(rely_msg))
 
 
 @add_user.handle()                                                                      #入群事件
 async def user_welcome(event: GroupIncreaseNoticeEvent, bot: Bot):
+    if not (await check_add_user(g_temp, str(event.group_id))):
+        await add_user.finish(notAllow, at_sender=True)
     bot_qq = int(bot.self_id)
     rely_msg = await  add_user_wecome(event.time, event.user_id, bot_qq)
     await add_user.finish(message=Message(rely_msg))
@@ -109,11 +119,37 @@ async def user_welcome(event: GroupIncreaseNoticeEvent, bot: Bot):
 
 @group_admin.handle()                                                                   #管理员变动
 async def admin_chance(event: GroupAdminNoticeEvent, bot: Bot):
+    if not (await check_admin(g_temp, str(event.group_id))):
+        await group_admin.finish(notAllow, at_sender=True)
     bot_qq = int(bot.self_id)
     rely_msg = await admin_changer(event.sub_type, event.user_id, bot_qq)
     await group_admin.finish(message=Message(rely_msg))
 
 @red_packet.handle()                                                                    #红包运气王
 async def hongbao(event: LuckyKingNotifyEvent):
-    rely_msg = f"[CQ:at,qq={event.user_id}]\n本次红包运气王为：[CQ:at,qq={event.target_id}]"
-    await red_packet.finish(message=Message(rely_msg))
+    if not (await check_red_package(g_temp, str(event.group_id))):
+        await red_packet.finish(notAllow, at_sender=True)
+    rely_msg = MessageSegment.at(event.user_id) + "\n" + "本次红包运气王为：" + MessageSegment.at(event.target_id)
+    await red_packet.finish(message=rely_msg)
+
+
+# async def open_module(
+#     matcher: Matcher, event: GroupMessageEvent, args: Tuple = RegexGroup()
+# ) -> None:
+#     """开关"""
+#     gid = str(event.group_id)
+#     command: str = args[0]
+#         if "开启" in command or "开始" in command:
+#             if gid in g_temp:
+#                 g_temp[gid]["allow"] = True
+#             else:
+#                 g_temp.update({gid: {"allow": True}})
+#             write_group_data()
+#             await matcher.finish("功能已开启喵")
+#         elif "禁止" in command or "关闭" in command:
+#             if gid in g_temp:
+#                 g_temp[gid]["allow"] = False
+#             else:
+#                 g_temp.update({gid: {"allow": False}})
+#             write_group_data()
+#             await matcher.finish("功能已禁用喵")

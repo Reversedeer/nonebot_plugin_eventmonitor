@@ -19,7 +19,6 @@ async def admin_changer(sub_type, user_id, bot_qq) :
         )
     return admin_msg
 
-
 async def del_user_bye(add_time, user_id):
     global del_user_msg
     del_time = datetime.fromtimestamp(add_time)
@@ -30,7 +29,6 @@ async def del_user_bye(add_time, user_id):
         del_user_msg = f"✈️ 成员变动⌈{del_time}⌋\nQQ号为：{user_id}的小可爱退群喵~" \
                        f"[CQ:image,file=https://q4.qlogo.cn/headimg_dl?dst_uin={user_id}&spec=640]"
         return del_user_msg
-
 
 async def add_user_wecome(add_time, user_id, bot_qq):
     global groups_all, add_user_msg
