@@ -146,7 +146,7 @@ async def check_red_package(g_temp, gid: str) -> bool:
     return g_temp[gid]["red_package"]
 
 #根据关键词获取对应功能名称
-async def get_function_name(key: str) -> str:
+def get_function_name(key: str) -> str:
     return path[key][0]
 
 #戳一戳cd默认值    
