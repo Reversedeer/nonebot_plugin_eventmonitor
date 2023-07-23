@@ -96,9 +96,9 @@ async def check_honor(g_temp, gid: str) -> bool:
     return g_temp[gid]["honor"]
 #检查群文件是否允许 
 async def check_file(g_temp, gid: str) -> bool:
-    if gid in g_temp and not g_temp[gid]["file"]:
+    if gid in g_temp and not g_temp[gid]["files"]:
         return False
-    return g_temp[gid]["file"]
+    return g_temp[gid]["files"]
 #检查群成员减少是否允许 
 async def check_del_user(g_temp, gid: str) -> bool:
     if gid in g_temp and not g_temp[gid]["del_user"]:
