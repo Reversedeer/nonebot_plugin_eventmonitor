@@ -3,10 +3,12 @@ from .utils import nickname
 
     
 async def chuo_send_msg():
-    rand_num = random.randint(0, len(chuo_msg) - 1)
+    # 使用 random.randint() 生成一个随机整数，作为选择消息的索引
+    rand_num = random.randint(0, len(chuo_msg) - 1)  
+    # 返回位于随机索引处的消息
     return chuo_msg[rand_num]
 
-
+#戳一戳文案
 chuo_msg = [
     f"别戳了，{nickname}怕疼QwQ",
     f"呜呜，再戳{nickname}脸都要肿了",
