@@ -46,31 +46,63 @@ async def _is_red_packet(event: Event) -> bool:
     return isinstance(event, LuckyKingNotifyEvent)
 
 # 戳一戳
-chuo = on_notice(Rule(_is_poke), priority=50, block=True)
+chuo = on_notice(
+    Rule(_is_poke),
+    priority=50,
+    block=True
+)
 # 群荣誉
-qrongyu = on_notice(Rule(_is_rongyu), priority=50, block=True)
+qrongyu = on_notice(
+    Rule(_is_rongyu),
+    priority=50,
+    block=True
+)
 # 群文件
-files = on_notice(Rule(_is_checker), priority=50, block=True)
+files = on_notice(
+    Rule(_is_checker),
+    priority=50,
+    block=True
+)
 # 群员减少
-del_user = on_notice(Rule(_is_del_user), priority=50, block=True)
+del_user = on_notice(
+    Rule(_is_del_user),
+    priority=50,
+    block=True
+)
 # 群员增加
-add_user = on_notice(Rule(_is_add_user), priority=50, block=True)
+add_user = on_notice(
+    Rule(_is_add_user),
+    priority=50,
+    block=True
+)
 # 群管理
-group_admin = on_notice(Rule(_is_admin_change), priority=50, block=True)
+group_admin = on_notice(
+    Rule(_is_admin_change),
+    priority=50,
+    block=True
+)
 # 红包
-red_packet = on_notice(Rule(_is_red_packet), priority=50, block=True)
+red_packet = on_notice(
+    Rule(_is_red_packet),
+    priority=50,
+    block=True
+)
 # 功能开关
-switch_command = on_command("开启", aliases={"关闭"}, 
-                        permission=SUPERUSER | GROUP_ADMIN | GROUP_OWNER,
-                        priority=10,
-                        block=False
-                    )
+switch_command = on_command(
+    "开启",
+    aliases={"关闭"}, 
+    permission=SUPERUSER | GROUP_ADMIN | GROUP_OWNER,
+    priority=10,
+    block=True
+)
 #功能状态
-state = on_command("event配置", aliases={"event状态"},
-                        permission=SUPERUSER | GROUP_ADMIN | GROUP_OWNER,
-                        priority=10,
-                        block=False
-                    )
+state = on_command(
+    "event配置",
+    aliases={"event状态"},
+    permission=SUPERUSER | GROUP_ADMIN | GROUP_OWNER,
+    priority=10,
+    block=True
+)
 
 #初始化配置配置文件
 @driver.on_bot_connect
@@ -97,65 +129,60 @@ async def send_chuo(event: PokeNotifyEvent):
         chuo_CD_dir.update({uid: event.time})
     rely_msg = await chuo_send_msg()
     await chuo.finish(message=Message(rely_msg))
+
 #群荣誉变化
 @qrongyu.handle()                                                                       
 async def send_rongyu(event: HonorNotifyEvent, bot: Bot):
     if not (await check_honor(g_temp, str(event.group_id))):
-        await qrongyu.finish(notAllow, at_sender=True)
+        return
     bot_qq = int(bot.self_id)
     rely_msg = await monitor_rongyu(event.honor_type, event.user_id, bot_qq)
     await qrongyu.finish(message=Message(rely_msg))
+
 #上传群文件
 @files.handle()                                                                         
 async def handle_first_receive(event: GroupUploadNoticeEvent):
     if not (await check_file(g_temp, str(event.group_id))):
-        await files.finish(notAllow, at_sender=True)
+        return
     rely = MessageSegment.at(event.user_id) + '\n' + \
            MessageSegment.image(f'https://q4.qlogo.cn/headimg_dl?dst_uin={event.user_id}&spec=640') + \
            '\n 上传了新文件，感谢你一直为群里做贡献喵~' + MessageSegment.face(175)
     await files.finish(message=rely)
+
 #退群事件
 @del_user.handle()
 async def user_bye(event: GroupDecreaseNoticeEvent):
     if not (await check_del_user(g_temp, str(event.group_id))):
-        await del_user.finish(notAllow, at_sender=True)
+        return
     rely_msg = await  del_user_bye(event.time, event.user_id)
     await del_user.finish(message=Message(rely_msg))
+
 #入群事件
 @add_user.handle()
 async def user_welcome(event: GroupIncreaseNoticeEvent, bot: Bot):
+    await config_check()
     if not (await check_add_user(g_temp, str(event.group_id))):
-        await add_user.finish(notAllow, at_sender=True)
+        return
     bot_qq = int(bot.self_id)
     rely_msg = await  add_user_wecome(event.time, event.user_id, bot_qq)
     await add_user.finish(message=Message(rely_msg))
+
 #管理员变动
 @group_admin.handle()
 async def admin_chance(event: GroupAdminNoticeEvent, bot: Bot):
     if not (await check_admin(g_temp, str(event.group_id))):
-        await group_admin.finish(notAllow, at_sender=True)
+        return
     bot_qq = int(bot.self_id)
     rely_msg = await admin_changer(event.sub_type, event.user_id, bot_qq)
     await group_admin.finish(message=Message(rely_msg))
+    
 #红包运气王
 @red_packet.handle()
 async def hongbao(event: LuckyKingNotifyEvent):
     if not (await check_red_package(g_temp, str(event.group_id))):
-        await red_packet.finish(notAllow, at_sender=True)
+        return
     rely_msg = MessageSegment.at(event.user_id) + "\n" + "本次红包运气王为：" + MessageSegment.at(event.target_id)
     await red_packet.finish(message=rely_msg)
-
-
-def get_command_type(command: str) -> str:
-    """根据指令内容获取开关类型"""
-    return next(
-        (
-            key
-            for key, keywords in path.items()
-            if any(keyword in command for keyword in keywords)
-        ),
-        "",
-    )
 
 @switch_command.handle()
 async def switch(event: GroupMessageEvent, matcher: Matcher):
@@ -169,13 +196,13 @@ async def switch(event: GroupMessageEvent, matcher: Matcher):
             g_temp[gid][key] = True
             write_group_data(g_temp)
             name = get_function_name(key)
-            await switch_command.finish(f"{name}功能已开启喵")
+            await matcher.finish(f"{name}功能已开启喵")
     elif "禁止" in command or "关闭" in command:
         if key := get_command_type(command):
             g_temp[gid][key] = False
             write_group_data(g_temp)
             name = get_function_name(key)
-            await switch_command.finish(f"{name}功能已禁用喵")
+            await matcher.finish(f"{name}功能已禁用喵")
 
 @state.handle()
 async def event_state(event:GroupMessageEvent, matcher: Matcher):
