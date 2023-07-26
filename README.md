@@ -33,7 +33,8 @@ _✨ 基于NoneBot2实现的 监测QQ群事件 插件 ✨_
 nb plugin install nonebot_plugin_eventmonitor
 ```
 
-<details><summary><h3>pip</h3></summary>
+<details>
+    <summary><h3>pip</h3></summary>
 
     pip install nonebot-plugin-eventmonitor
 在’pyproject.toml‘文件中写入
@@ -71,6 +72,7 @@ usage = """
 
 <details>
     <summary><h2>更新日志</h2></summary>
+
 
 - v0.2.0
 
