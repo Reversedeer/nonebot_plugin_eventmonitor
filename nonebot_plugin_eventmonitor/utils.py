@@ -5,15 +5,27 @@ from pathlib import Path
 from typing import Optional
 
 g_temp = {}
+chuo_CD_dir = {}
+
 config_path = Path() / 'data/eventmonitor'
 address = config_path / 'config.json'
+
+driver = nonebot.get_driver()
+#从 配置文件中获取SUPERUSER, NICKNAME
+config = nonebot.get_driver().config
+superusers = {int(uid) for uid in config.superusers}
+nickname = next(iter(config.nickname))
+#戳一戳cd,感觉很鸡肋，自行调整
+
+notAllow = "功能未开启"
+
 
 async def init(g_temp):
     """
     初始化配置文件
     :return:
     """   
-    # 如果数据文件路径不存在，则创建目录，并初始化群组数据为空字典，并写入对应的文件
+    # 如果数据文件路径不存在，则创建目录
     if not os.path.exists(config_path):  
         os.makedirs(config_path)  
     if os.path.exists(address):
@@ -23,7 +35,7 @@ async def init(g_temp):
     else:
         # 如果群数据文件不存在，则初始化g_temp为空字典，并写入对应的文件
         bot = nonebot.get_bot()
-        group_list = (await bot.get_group_list())
+        group_list = await bot.get_group_list()
         #从group_list中遍历每个群组
         for group in group_list:
             # 为每个群组创建一个临时字典temp，用于存储群组的配置信息
@@ -43,12 +55,14 @@ async def init(g_temp):
 
 
 async def config_check():
+    global g_temp
     # 获取机器人实例
     bot = nonebot.get_bot()
     # 获取所有群组的列表
-    group_list = (await bot.get_group_list())  
+    group_list = await bot.get_group_list()
     # 加载配置文件，得到一个包含配置信息的字典
-    config_dict = json_load(address)  
+    with open(address, "r", encoding="utf-8") as f:
+        config_dict = json.load(f)  
     # 遍历所有群组
     for group in group_list:
         gid = str(group['group_id']) 
@@ -70,7 +84,7 @@ async def config_check():
                     # 特殊情况下（group_name为'red_package'），将该配置项设为False
                     if group_name in ['red_package']:
                         other_group[gid][group_name] = False
-   
+    g_temp.update(config_dict)
     # 将更新后的配置字典上传到配置文件中
     json_upload(address, config_dict)
 
@@ -112,6 +126,7 @@ async def check_chuo(g_temp, gid: str) -> bool:
 #检查群荣誉是否允许 
 async def check_honor(g_temp, gid: str) -> bool:
     if gid in g_temp and not g_temp[gid]["honor"]:
+        print(g_temp)
         return False
     return g_temp[gid]["honor"]
 
@@ -125,13 +140,16 @@ async def check_file(g_temp, gid: str) -> bool:
 async def check_del_user(g_temp, gid: str) -> bool:
     if gid in g_temp and not g_temp[gid]["del_user"]:
         return False
+    print(g_temp)
     return g_temp[gid]["del_user"]
 
 #检查群成员增加是否允许
 async def check_add_user(g_temp, gid: str) -> bool:
     if gid in g_temp and not g_temp[gid]["add_user"]:
         return False
+    print(g_temp)
     return g_temp[gid]["add_user"]
+    
 
 #检查管理员是否允许
 async def check_admin(g_temp, gid: str) -> bool:
@@ -149,21 +167,23 @@ async def check_red_package(g_temp, gid: str) -> bool:
 def get_function_name(key: str) -> str:
     return path[key][0]
 
+#根据指令内容获取开关类型
+def get_command_type(command: str) -> str:
+    return next(
+        (
+            key
+            for key, keywords in path.items()
+            if any(keyword in command for keyword in keywords)
+        ),
+        "",
+    )
+
 #戳一戳cd默认值    
 try:
     chuo_cd = nonebot.get_driver().config.chuo_cd
 except Exception:
     chuo_cd = 0   
  
-#从 配置文件中获取SUPERUSER, NICKNAME
-config = nonebot.get_driver().config
-superusers = {int(uid) for uid in config.superusers}
-nickname = next(iter(config.nickname))
-#戳一戳cd,感觉很鸡肋，自行调整
-chuo_CD_dir = {}
-driver = nonebot.get_driver()
-notAllow = "功能未开启"
-
 
 path = {
     'chuo': ['戳一戳'],

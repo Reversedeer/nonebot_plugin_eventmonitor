@@ -33,7 +33,9 @@ _✨ 基于NoneBot2实现的 监测QQ群事件 插件 ✨_
 nb plugin install nonebot_plugin_eventmonitor
 ```
 
-<details><summary><h3>pip</h3></summary>
+<details>
+    <summary><h3>pip</h3></summary>
+
 
     pip install nonebot-plugin-eventmonitor
 在’pyproject.toml‘文件中写入
@@ -41,27 +43,45 @@ nb plugin install nonebot_plugin_eventmonitor
 
     "nonebot_plugin_eventmonitor"
 
-</details>
-
-<details><summary><h3>git clone</h3></summary>
-
-```
-git clone https://github.com/Reversedeer/nonebot_piugin_eventmonitor.git
-```
-
-</details>
-
-### 更新
+### 更新：
 
 ```
 pip install --upgrade nonebot-plugin-eventmonitor
 ```
 
+</details>
+
 ## 配置
 
-| config  | type | default |   example    |       usage        |
-| :-----: | :--: | :-----: | :----------: | :----------------: |
-| chuo_cd | int  |    0    | chuo_cd = 10 | 戳一戳的cd（选填） |
+|   config   |   type   | default |        example        |                            usage                             |
+| :--------: | :------: | :-----: | :-------------------: | :----------------------------------------------------------: |
+|  chuo_cd   |   int    |    0    |     chuo_cd = 10      |                      戳一戳的cd（选填）                      |
+| SUPERUSERS | set[str] |  set()  | SUPERUSERS=["114514"] | 机器人超级用户，可以使用权限 [`SUPERUSER`](https://nonebot.dev/docs/2.0.0/api/permission#SUPERUSER)(必填) |
+|  NICKNAME  | set[str] |  set()  |   NICKNAME=["IKun"]   | 机器人昵称，通常协议适配器会根据用户是否 @user 或者是否以机器人昵称开头来判断是否是向机器人发送的消息(必填) |
+
+## 指令帮助
+
+```
+User: (戳一戳-> bot)
+Bot: "请不要戳AI-Md >_<"
+
+SUPERUSER/GROUP_ADMIN/GROUP_OWNER: "/开启 群荣誉检测"
+Bot: "群荣誉检测功能已开启喵"
+
+SUPERUSER/GROUP_ADMIN/GROUP_OWNER: "/event配置"
+Bot: "
+	群114514的Event配置状态：
+	戳一戳: 开启
+	群荣誉检测: 开启
+	群文件检测: 开启
+	群成员减少检测: 开启
+	群成员增加检测: 开启
+	管理员变动检测: 开启
+	运气王检测: 关闭
+	"
+```
+
+
 
 ## 指令结构帮助：
 
@@ -75,17 +95,36 @@ usage = """
     指令6：管理员变动检测(当新增管理员或取消管理员时发送消息提示，当bot自身被上/下管理时有特殊回复)
     指令7：运气王检测(检测抢红包检测后的运气王并发送提示消息)
     """
+    
+json结构(默认值):
+{
+	"114514": {
+        "chuo": true,
+        "honor": true,
+        "files": true,
+        "del_user": true,
+        "add_user": true,
+        "admin": true,
+        "red_package": false
+    }
+}
 ```
 
 <details>
     <summary><h2>更新日志</h2></summary>
 
-- v0.1.9
 
+- v0.2.0
+
+  - 🐛修复bot加群bug[issue6](https://github.com/Reversedeer/nonebot_plugin_eventmonitor/issues/18)
+  
+  - 优化提示
+  
+- v0.1.9
   - 🚨增加功能开关指令：event状态/event配置 
   - 🐛修复群文件不能检测bug(少写一个字母qwq)
   - 优化目录结构
-  
+
 - v0.1.7
   - 🚨新增所有功能开关[#issue5](https://github.com/Reversedeer/nonebot_plugin_eventmonitor/issues/9)
 

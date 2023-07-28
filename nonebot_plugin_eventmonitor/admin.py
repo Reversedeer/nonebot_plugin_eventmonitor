@@ -32,7 +32,6 @@ async def del_user_bye(add_time, user_id):
     if user_id in superusers:
         # 如果是超级用户，生成特定的离开消息
         del_user_msg = f"⌈{del_time}⌋\n@{user_id}恭送主人离开喵~"
-        print(superusers)
     else:
         # 如果不是超级用户，生成通用的离开消息，包含用户的QQ号和头像图片
         del_user_msg = f"✈️ 成员变动 ✈️ \n时间: ⌈{del_time}⌋\nQQ号为：{user_id}的小可爱退群喵~" \
@@ -58,6 +57,5 @@ async def add_user_wecome(add_time, user_id, bot_qq):
         # 如果是普通用户加入群组，生成通用的欢迎消息，包含用户ID、加入时间和用户头像图片的链接
         add_user_msg = f"✨ 成员变动 ✨\n欢迎@{user_id}的加入喵~\n加入时间：⌈{add_time}⌋，请在群内积极发言喵~" \
                        f"[CQ:image,file=https://q4.qlogo.cn/headimg_dl?dst_uin={user_id}&spec=640]"
-    
     return add_user_msg
 
