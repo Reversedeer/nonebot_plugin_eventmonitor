@@ -1,5 +1,6 @@
 import contextlib
 import nonebot
+
 from nonebot.rule import Rule
 from nonebot.matcher import Matcher
 from nonebot.plugin import on_notice, on_command
@@ -232,7 +233,7 @@ with contextlib.suppress(Exception):
         supported_adapters={"onebot.v11"},
         extra={
             "author": "Reversedeer",
-            "version": "0.1.9",
+            "version": "0.2.0",
             "priority": 50,
         },
     )

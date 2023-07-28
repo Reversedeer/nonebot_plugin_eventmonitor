@@ -35,7 +35,7 @@ async def init(g_temp):
     else:
         # 如果群数据文件不存在，则初始化g_temp为空字典，并写入对应的文件
         bot = nonebot.get_bot()
-        group_list = (await bot.get_group_list())
+        group_list = await bot.get_group_list()
         #从group_list中遍历每个群组
         for group in group_list:
             # 为每个群组创建一个临时字典temp，用于存储群组的配置信息
@@ -59,7 +59,7 @@ async def config_check():
     # 获取机器人实例
     bot = nonebot.get_bot()
     # 获取所有群组的列表
-    group_list = (await bot.get_group_list())  
+    group_list = await bot.get_group_list()
     # 加载配置文件，得到一个包含配置信息的字典
     with open(address, "r", encoding="utf-8") as f:
         config_dict = json.load(f)  
@@ -84,7 +84,7 @@ async def config_check():
                     # 特殊情况下（group_name为'red_package'），将该配置项设为False
                     if group_name in ['red_package']:
                         other_group[gid][group_name] = False
-    g_temp = config_dict
+    g_temp.update(config_dict)
     # 将更新后的配置字典上传到配置文件中
     json_upload(address, config_dict)
 
@@ -126,6 +126,7 @@ async def check_chuo(g_temp, gid: str) -> bool:
 #检查群荣誉是否允许 
 async def check_honor(g_temp, gid: str) -> bool:
     if gid in g_temp and not g_temp[gid]["honor"]:
+        print(g_temp)
         return False
     return g_temp[gid]["honor"]
 
@@ -139,13 +140,16 @@ async def check_file(g_temp, gid: str) -> bool:
 async def check_del_user(g_temp, gid: str) -> bool:
     if gid in g_temp and not g_temp[gid]["del_user"]:
         return False
+    print(g_temp)
     return g_temp[gid]["del_user"]
 
 #检查群成员增加是否允许
 async def check_add_user(g_temp, gid: str) -> bool:
     if gid in g_temp and not g_temp[gid]["add_user"]:
         return False
+    print(g_temp)
     return g_temp[gid]["add_user"]
+    
 
 #检查管理员是否允许
 async def check_admin(g_temp, gid: str) -> bool:
