@@ -1,14 +1,30 @@
 <p align="center">
-  <a href="https://v2.nonebot.dev/"><img src="https://v2.nonebot.dev/logo.png" width="200" height="200" alt="nonebot"></a>
+  <a href="https://nonebot.dev">
+    <img src="https://nonebot.dev/logo.png" width="180" height="180" alt="NoneBot">
+  </a>
 </p>
 
 
-<div align="center">
-# Monitor_Groups
 
-_✨ 基于NoneBot2实现的 监测QQ群事件 插件 ✨_
+<div align="center">
+
+# nonebot_plugin_eventmonitor
+
+✨ 基于NoneBot2实现的 监测QQ群事件，群荣誉事件的插件 ✨
 
 </div>
+
+<p align="center">
+  <a href="https://raw.githubusercontent.com/Mrs4s/go-cqhttp/master/LICENSE">
+    <img src="https://img.shields.io/github/license/Mrs4s/go-cqhttp" alt="license">
+  </a>
+  <a href="https://camo.githubusercontent.com/c5bfbde247cd10e93ff50a518b0f5e441a6e9959495f6bf0f1a1913d2b1b7a8d/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f707974686f6e2d332e382b2d626c75652e737667">
+    <img src="https://img.shields.io/badge/python-3.8+-green.svg" alt="python">
+  </a>
+  <a href="https://github.com/howmanybots/onebot/blob/master/README.md">
+    <img src="https://img.shields.io/badge/NoneBot2-blue?style=flat&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABABAMAAABYR2ztAAAAIVBMVEUAAAAAAAADAwMHBwceHh4UFBQNDQ0ZGRkoKCgvLy8iIiLWSdWYAAAAAXRSTlMAQObYZgAAAQVJREFUSMftlM0RgjAQhV+0ATYK6i1Xb+iMd0qgBEqgBEuwBOxU2QDKsjvojQPvkJ/ZL5sXkgWrFirK4MibYUdE3OR2nEpuKz1/q8CdNxNQgthZCXYVLjyoDQftaKuniHHWRnPh2GCUetR2/9HsMAXyUT4/3UHwtQT2AggSCGKeSAsFnxBIOuAggdh3AKTL7pDuCyABcMb0aQP7aM4AnAbc/wHwA5D2wDHTTe56gIIOUA/4YYV2e1sg713PXdZJAuncdZMAGkAukU9OAn40O849+0ornPwT93rphWF0mgAbauUrEOthlX8Zu7P5A6kZyKCJy75hhw1Mgr9RAUvX7A3csGqZegEdniCx30c3agAAAABJRU5ErkJggg==" alt="cqhttp">
+  </a>
+</p>
 
 ## 介绍：点点Star✨
 > 监测群组的以下变动事件：
@@ -27,7 +43,7 @@ _✨ 基于NoneBot2实现的 监测QQ群事件 插件 ✨_
 
 ## 安装方式
 
-### nb-cli安装(推荐)
+### nb-cli(推荐)
 
 ```
 nb plugin install nonebot_plugin_eventmonitor
@@ -110,9 +126,13 @@ json结构(默认值):
 }
 ```
 
+## TODO
+
+- [ ] 更多的事件检测
+- [x] 事件检测功能开关
+
 <details>
     <summary><h2>更新日志</h2></summary>
-
 
 - v0.2.0
 
