@@ -59,13 +59,13 @@ nb plugin install nonebot_plugin_eventmonitor
 
     "nonebot_plugin_eventmonitor"
 
+</details>
+
 ### 更新：
 
 ```
 pip install --upgrade nonebot-plugin-eventmonitor
 ```
-
-</details>
 
 ## 配置
 
@@ -128,8 +128,9 @@ json结构(默认值):
 
 ## TODO
 
-- [ ] 更多的事件检测
+- [ ] 更多的事件检测功能
 - [x] 事件检测功能开关
+- [ ] 文字转图片发送
 
 <details>
     <summary><h2>更新日志</h2></summary>
