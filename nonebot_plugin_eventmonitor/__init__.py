@@ -146,7 +146,7 @@ async def handle_first_receive(event: GroupUploadNoticeEvent):
     if not (await check_file(g_temp, str(event.group_id))):
         return
     rely = MessageSegment.at(event.user_id) + '\n' + \
-           MessageSegment.image(f'https://q4.qlogo.cn/headimg_dl?dst_uin={event.user_id}&spec=640') + \
+           MessageSegment.image(f'https://q1.qlogo.cn/g?b=qq&nk={event.user_id}&s=640') + \
            '\n 上传了新文件，感谢你一直为群里做贡献喵~' + MessageSegment.face(175)
     await files.finish(message=rely)
 
