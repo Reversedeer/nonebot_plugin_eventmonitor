@@ -9,15 +9,11 @@ chuo_CD_dir = {}
 
 config_path = Path() / 'data/eventmonitor'
 address = config_path / 'config.json'
-
-driver = nonebot.get_driver()
-#从 配置文件中获取SUPERUSER, NICKNAME
-config = nonebot.get_driver().config
+config = nonebot.get_driver().config  #从 配置文件中获取SUPERUSER, NICKNAME
 superusers = {int(uid) for uid in config.superusers}
-nickname = next(iter(config.nickname))
-#戳一戳cd,感觉很鸡肋，自行调整
-
+nickname: str = next(iter(config.nickname), "Bot")
 notAllow = "功能未开启"
+chuo_cd: int = getattr(config, "chuo_cd", 0) #戳一戳cd默认值 
 
 
 async def init(g_temp):
@@ -111,64 +107,71 @@ def json_upload(path, dict_content) -> None:
         c.write(json.dumps(dict_content, ensure_ascii=False, indent=4))
 
 
-#写入群配置
+
 def write_group_data(g_temp):
+    """写入群配置"""
     with open('data/eventmonitor/config.json', 'w', encoding='utf-8') as f:
         json.dump(g_temp, f, indent=4, ensure_ascii=False)
 
 
-#检查戳一戳是否允许
 async def check_chuo(g_temp, gid: str) -> bool: 
+    """检查戳一戳是否允许"""
     if gid in g_temp and not g_temp[gid]["chuo"]:
         return False
     return g_temp[gid]["chuo"]
 
-#检查群荣誉是否允许 
+
 async def check_honor(g_temp, gid: str) -> bool:
+    """检查群荣誉是否允许"""
     if gid in g_temp and not g_temp[gid]["honor"]:
         print(g_temp)
         return False
     return g_temp[gid]["honor"]
 
-#检查群文件是否允许 
+ 
 async def check_file(g_temp, gid: str) -> bool:
+    """检查群文件是否允许"""
     if gid in g_temp and not g_temp[gid]["files"]:
         return False
     return g_temp[gid]["files"]
 
-#检查群成员减少是否允许 
+
 async def check_del_user(g_temp, gid: str) -> bool:
+    """检查群成员减少是否允许 """
     if gid in g_temp and not g_temp[gid]["del_user"]:
         return False
     print(g_temp)
     return g_temp[gid]["del_user"]
 
-#检查群成员增加是否允许
+
 async def check_add_user(g_temp, gid: str) -> bool:
+    """检查群成员增加是否允许"""
     if gid in g_temp and not g_temp[gid]["add_user"]:
         return False
     print(g_temp)
     return g_temp[gid]["add_user"]
     
 
-#检查管理员是否允许
 async def check_admin(g_temp, gid: str) -> bool:
+    """检查管理员是否允许"""
     if gid in g_temp and not g_temp[gid]["admin"]:
         return False
     return g_temp[gid]["admin"]
 
-#检查运气王是否允许
+
 async def check_red_package(g_temp, gid: str) -> bool:
+    """检查运气王是否允许"""
     if gid in g_temp and not g_temp[gid]["red_package"]:
         return False
     return g_temp[gid]["red_package"]
 
-#根据关键词获取对应功能名称
 def get_function_name(key: str) -> str:
+    """根据关键词获取对应功能名称"""
     return path[key][0]
 
-#根据指令内容获取开关类型
+
 def get_command_type(command: str) -> str:
+    """根据指令内容获取开关类型"""
     return next(
         (
             key
@@ -177,13 +180,7 @@ def get_command_type(command: str) -> str:
         ),
         "",
     )
-
-#戳一戳cd默认值    
-try:
-    chuo_cd = nonebot.get_driver().config.chuo_cd
-except Exception:
-    chuo_cd = 0   
- 
+    
 
 path = {
     'chuo': ['戳一戳'],
