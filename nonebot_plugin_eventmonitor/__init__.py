@@ -1,10 +1,10 @@
-import contextlib
 import nonebot
 
 from nonebot.rule import Rule
 from nonebot.matcher import Matcher
 from nonebot.plugin import on_notice, on_command
 from nonebot.permission import SUPERUSER
+from nonebot.plugin import PluginMetadata
 from nonebot.adapters.onebot.v11.permission import GROUP_OWNER, GROUP_ADMIN
 from nonebot.adapters.onebot.v11 import (
     Bot, Event, Message,
@@ -104,7 +104,7 @@ state = on_command(
     priority=10,
     block=True
 )
-
+driver = nonebot.get_driver()
 #初始化配置配置文件
 @driver.on_bot_connect
 async def _():
@@ -221,19 +221,16 @@ async def event_state(event:GroupMessageEvent, matcher: Matcher):
     )
 
 
-with contextlib.suppress(Exception):
-    from nonebot.plugin import PluginMetadata
-
-    __plugin_meta__ = PluginMetadata(
-        name="eventmonitor",
-        description="监控群事件的插件，支持戳一戳，成员变动，群荣誉变化等提示的插件",
-        usage=utils.usage,
-        type="application",
-        homepage="https://github.com/Reversedeer/nonebot_plugin_eventmonitor",
-        supported_adapters={"onebot.v11"},
-        extra={
-            "author": "Reversedeer",
-            "version": "0.2.0",
-            "priority": 50,
-        },
-    )
+__plugin_meta__ = PluginMetadata(
+    name="eventmonitor",
+    description="监控群事件的插件，支持戳一戳，成员变动，群荣誉变化等提示的插件",
+    usage=utils.usage,
+    type="application",
+    homepage="https://github.com/Reversedeer/nonebot_plugin_eventmonitor",
+    supported_adapters={"~onebot.v11"},
+    extra={
+        "author": "Reversedeer",
+        "version": "0.2.1",
+        "priority": 50,
+    }
+)
