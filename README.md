@@ -3,9 +3,13 @@
 </p>
 
 <div align="center">
-# nonebot-plugin-sunoai
-_✨ 基于 NoneBot2 实现的 监测 QQ 群事件，群荣誉事件的插件 ✨_
+
+# nonebot-plugin-eventmonitor
+
+_✨ 基于 NoneBot2 实现的 监测 QQ 群事件，群荣誉事件的插件✨_
+
 </div>
+
 
 <p align="center">
   <a href="https://raw.githubusercontent.com/Reversedeer/nonebot_plugin_eventmonitor/main/LICENSE">
@@ -238,4 +242,3 @@ json结构(默认值):
 ## 其他插件
 
 [nonebot-plugin-dog(获取舔狗文案，汪！)](https://github.com/Reversedeer/nonebot_plugin_dog)
-
