@@ -1,3 +1,4 @@
+"""依赖文件"""
 import os
 import json
 import nonebot
@@ -26,8 +27,9 @@ class Utils:
             指令5：群成员增加检测(当有人入群时，发送入群欢迎，当bot首次入群会乞讨管理，当主人/superuser入群会有特殊回复)
             指令6：管理员变动检测(当新增管理员或取消管理员时发送消息提示，当bot自身被上/下管理时有特殊回复)
             指令7：运气王检测(检测抢红包检测后的运气王并发送提示消息)
-            指令8：检查event更新
-            指令9：重启"""
+            指令8：更新插件eventmonitor
+            指令9：重启
+            指令10：event配置"""
         self.notAllow = '功能未开启'
         self.path = {
             'chuo': ['戳一戳'],
@@ -43,11 +45,12 @@ class Utils:
         self.config_path = Path() / 'data/eventmonitor'
         self.address = self.config_path / 'config.json'
         config = nonebot.get_driver().config
-        self.superusers = {int(uid) for uid in config.superusers}
-        self.nickname = next(iter(config.nickname))
+        self.superusers: set[int] = {int(uid) for uid in config.superusers}
+        self.nickname: str = next(iter(config.nickname), "Bot")
         self.chuo_cd: int = getattr(config, "chuo_cd", 10)
         self.check_bot_update: bool = getattr(config, "isalive", True)
-        self.current_version = '0.3.1'
+        self.check_txt_img:bool = getattr(config, "event_img", False)
+        self.current_version = '0.3.2'
         #戳一戳文案
         self.chuo_msg = [
             f"别戳了，{self.nickname}怕疼QwQ",
@@ -212,6 +215,12 @@ class Utils:
         if gid in g_temp and not g_temp[gid]["red_package"]:
             return False
         return g_temp[gid]["red_package"]
+    
+    @staticmethod
+    async def check_txt_to_img(check_txt_img):
+        if not utils.check_txt_img:
+            return False
+        return check_txt_img
 
     def get_function_name(self, key: str) -> str:
         """根据关键词获取对应功能名称"""

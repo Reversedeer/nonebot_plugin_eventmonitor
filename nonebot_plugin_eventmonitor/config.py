@@ -1,3 +1,4 @@
+"""消息处理文本"""
 import random
 
 from datetime import datetime
@@ -9,8 +10,8 @@ from .utils import utils
 class Config:
     @staticmethod
     async def admin_changer(sub_type, user_id, bot_qq)  -> str: 
+        """发送管理员变动消息"""
         admin_msg = ""
-        
         # 根据管理员变动类型选择不同的消息
         if sub_type == "set":
             # 如果用户ID等于机器人的QQ号，返回特定消息
@@ -31,10 +32,9 @@ class Config:
 
     @staticmethod
     async def del_user_bye(add_time, user_id):
-        # sourcery skip: inline-immediately-returned-variable, use-fstring-for-concatenation
+        """发送退群消息"""
         rely = ""
         del_time = datetime.fromtimestamp(add_time)
-        
         # 检查用户ID是否在超级用户列表superusers中
         if user_id in utils.superusers:
             # 如果是超级用户，生成特定的离开消息
@@ -48,7 +48,7 @@ class Config:
 
     @staticmethod
     async def add_user_wecome(add_time, user_id, bot_qq):
-
+        """发送入群消息"""
         # 将时间戳转换为datetime类型的时间add_time
         add_time = datetime.fromtimestamp(add_time) 
         rely = ""
@@ -69,6 +69,7 @@ class Config:
 
     @staticmethod
     async def monitor_rongyu(honor_type, user_id, bot_qq) -> str:
+        """发送群荣誉变化消息"""
         rely = ""  
         # 根据honor_type选择不同的消息
         if honor_type == "emotion":
@@ -108,6 +109,7 @@ class Config:
     
     @staticmethod
     async def rad_package_change(target_id, bot_qq) -> str:
+        """发送运气王变化消息"""
         rely = ""
         if target_id == bot_qq:
             rely = "你们又不行了，本喵喜提运气王🧧"
@@ -126,6 +128,7 @@ class Config:
 
     @staticmethod
     async def upload_files(user_id) -> Message:
+        """发送上传群文件消息"""
         return (
             MessageSegment.image(
                 f'https://q4.qlogo.cn/headimg_dl?dst_uin={user_id}&spec=640'

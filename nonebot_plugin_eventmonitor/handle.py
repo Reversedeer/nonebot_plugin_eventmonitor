@@ -1,3 +1,4 @@
+"""事件处理"""
 import os
 import json
 import shutil
@@ -10,6 +11,7 @@ from nonebot.log import logger
 from nonebot.matcher import Matcher
 from nonebot.adapters.onebot.v11 import (
     Bot, Message,
+    MessageSegment,
     PokeNotifyEvent,
     HonorNotifyEvent,
     GroupUploadNoticeEvent,
@@ -23,10 +25,12 @@ from nonebot.adapters.onebot.v11 import (
 from .utils import utils
 from .config import config
 from .update import update
+from .txt2img import txt_to_img
 
 class Eventmonitor:
     @staticmethod
-    async def chuo(matcher: Matcher, event: PokeNotifyEvent) -> NoReturn:
+    async def chuo(matcher: Matcher, event: PokeNotifyEvent) -> None:
+        """戳一戳"""
         if not (await utils.check_chuo(utils.g_temp, str(event.group_id))):
             await matcher.finish(utils.notAllow)
         # 获取用户id    
@@ -39,63 +43,85 @@ class Eventmonitor:
         if cd > utils.chuo_cd or event.get_user_id() in nonebot.get_driver().config.superusers:
             utils.chuo_CD_dir.update({uid: event.time})
             rely_msg: str = await config.chuo_send_msg()
-            await matcher.finish(message=Message(rely_msg))
-    #群荣誉事件
+            if not (await utils.check_txt_to_img(utils.check_txt_img)):
+                await matcher.finish(rely_msg)
+            else:
+                await matcher.send(MessageSegment.image(await txt_to_img.txt_to_img(rely_msg)))
+
     @staticmethod                                                         
     async def qrongyu(matcher: Matcher, event: HonorNotifyEvent, bot: Bot) -> None:
+        """群荣誉事件"""
         if not (await utils.check_honor(utils.g_temp, str(event.group_id))):
             return
         bot_qq = int(bot.self_id)
         rely_msg: str = await config.monitor_rongyu(event.honor_type, event.user_id, bot_qq)
-        await matcher.finish(message=Message(rely_msg), at_sender=True)
+        if not (await utils.check_txt_to_img(utils.check_txt_img)):
+            await matcher.finish(rely_msg)
+        else:
+            await matcher.send(MessageSegment.image(await txt_to_img.txt_to_img(rely_msg)), at_sender=True)
 
-    #群文件事件
     @staticmethod                                                                    
     async def files(matcher: Matcher, event: GroupUploadNoticeEvent) -> None:
+        """群文件事件"""
         if not (await utils.check_file(utils.g_temp, str(event.group_id))):
             return
-        rely_msg: Message= await config.upload_files(event.user_id)
-        await matcher.finish(message=rely_msg, at_sender=True)
+        rely_msg= await config.upload_files(event.user_id)
+        if not (await utils.check_txt_to_img(utils.check_txt_img)):
+            await matcher.finish(rely_msg)
+        else:
+            await matcher.send(MessageSegment.image(await txt_to_img.txt_to_img(str(rely_msg))), at_sender=True)
 
-    #退群事件
     @staticmethod
     async def del_user(matcher: Matcher, event: GroupDecreaseNoticeEvent) -> None:
+        """退群事件"""
         if not (await utils.check_del_user(utils.g_temp, str(event.group_id))):
             return
         rely_msg= await config.del_user_bye(event.time, event.user_id)
-        await matcher.finish(message=Message(rely_msg))
+        if not (await utils.check_txt_to_img(utils.check_txt_img)):
+            await matcher.finish(rely_msg)
+        else:
+            await matcher.send(MessageSegment.image(await txt_to_img.txt_to_img(str(rely_msg))), at_sender=True)
 
-    #入群事件
     @staticmethod
     async def add_user(matcher: Matcher, event: GroupIncreaseNoticeEvent, bot: Bot) -> None:
+        """入群事件"""
         await utils.config_check()
         if not (await utils.check_add_user(utils.g_temp, str(event.group_id))):
             return
         bot_qq = int(bot.self_id)
-        rely_msg = await  config.add_user_wecome(event.time, event.user_id, bot_qq)
-        await matcher.finish(message=Message(rely_msg), at_sender=True)
+        rely_msg = await config.add_user_wecome(event.time, event.user_id, bot_qq)
+        if not (await utils.check_txt_to_img(utils.check_txt_img)):
+            await matcher.finish(rely_msg)
+        else:
+            await matcher.send(MessageSegment.image(await txt_to_img.txt_to_img(str(rely_msg))), at_sender=True)
 
-    #管理员变动
     @staticmethod
     async def admin_chance(matcher: Matcher, event: GroupAdminNoticeEvent, bot: Bot) -> None:
+        """管理员变动事件"""
         if not (await utils.check_admin(utils.g_temp, str(event.group_id))):
             return
         bot_qq = int(bot.self_id)
         rely_msg: str = await config.admin_changer(event.sub_type, event.user_id, bot_qq)
-        await matcher.finish(message=Message(rely_msg), at_sender=True)
+        if not (await utils.check_txt_to_img(utils.check_txt_img)):
+            await matcher.finish(rely_msg)
+        else:
+            await matcher.send(MessageSegment.image(await txt_to_img.txt_to_img(rely_msg)), at_sender=True)
         
-    #红包运气王
     @staticmethod
     async def hongbao(matcher: Matcher, event: LuckyKingNotifyEvent, bot: Bot) -> None:
+        """红包运气王事件"""
         if not (await utils.check_red_package(utils.g_temp, str(event.group_id))):
             return
         bot_qq = int(bot.self_id)
         rely_msg = await config.rad_package_change(event.target_id, bot_qq)
-        await matcher.finish(message=Message(rely_msg), at_sender=True)
+        if not (await utils.check_txt_to_img(utils.check_txt_img)):
+            await matcher.finish(rely_msg)
+        else:
+            await matcher.send(MessageSegment.image(await txt_to_img.txt_to_img(rely_msg)), at_sender=True)
 
     @staticmethod
     async def switch(matcher: Matcher, event: GroupMessageEvent) -> None:
-        # 获取开关指令的参数，即用户输入的指令内容
+        """获取开关指令的参数，即用户输入的指令内容"""
         command = str(event.get_message()).strip()
         # 获取群组ID
         gid = str(event.group_id)
@@ -105,47 +131,68 @@ class Eventmonitor:
                 utils.g_temp[gid][key] = True
                 utils.write_group_data(utils.g_temp)
                 name = utils.get_function_name(key)
-                await matcher.finish(f"{name}功能已开启喵")
+                if not (await utils.check_txt_to_img(utils.check_txt_img)):
+                    await matcher.finish(f"{name}功能已开启喵")
+                else:
+                    await matcher.send(MessageSegment.image(await txt_to_img.txt_to_img(f"{name}功能已开启喵")))
         elif "禁止" in command or "关闭" in command:
             if key := utils.get_command_type(command):
                 utils.g_temp[gid][key] = False
                 utils.write_group_data(utils.g_temp)
                 name = utils.get_function_name(key)
-                await matcher.finish(f"{name}功能已禁用喵")
+                if not (await utils.check_txt_to_img(utils.check_txt_img)):
+                    await matcher.finish(f"{name}功能已关闭喵")
+                else:
+                    await matcher.send(MessageSegment.image(await txt_to_img.txt_to_img(f"{name}功能已关闭喵")))
+
+    @staticmethod
+    async def usage(matcher: Matcher) -> NoReturn:
+        """获取指令帮助"""
+        if not (await utils.check_txt_to_img(utils.check_txt_img)):
+            await matcher.finish(utils.usage)
+        else:
+            await matcher.send(MessageSegment.image(await txt_to_img.txt_to_img(utils.usage)))
     
     @staticmethod
     async def state(matcher: Matcher, event:GroupMessageEvent) -> None:
+        """指令开关"""
         gid = str(event.group_id)
         with open(utils.address, "r", encoding="utf-8") as f:
             group_status = json.load(f)
+
         if gid not in group_status:
             await utils.config_check()
-        else:
-            await matcher.finish(f"群{gid}的Event配置状态：\n" + "\n".join
-            (
-                [f"{utils.path[func][0]}: {'开启' if group_status[gid][func] else '关闭'}" 
-                 for func in utils.path]
+            with open(utils.address, "r", encoding="utf-8") as f:
+                group_status = json.load(f)
+
+        rely_msg = (f"群{gid}的Event配置状态：\n" + "\n".join(
+                    [f"{utils.path[func][0]}: {'开启' if group_status[gid][func] else '关闭'}" 
+                    for func in utils.path]
+                )
             )
-        )
+        if not (await utils.check_txt_to_img(utils.check_txt_img)):
+            await matcher.finish(rely_msg)
+        else:
+            await matcher.send(MessageSegment.image(await txt_to_img.txt_to_img(rely_msg)))
             
     @staticmethod
-    async def check_bot(matcher: Matcher):
+    async def check_bot(matcher: Matcher) -> None:
+        """检测插件更新"""
         try:
             code, error = await eventmonitor.check_update(matcher)
             if error:
                 logger.error(f"错误: {error}", "插件检查更新")
-                await matcher.send(f"更新插件nonebot-plugin-evenrmonitor时发生错误:\n{error}")
+                await matcher.send(f"下载更新插件nonebot-plugin-evenrmonitor时发生网络错误:\n{error}")
         except Exception as e:
-            logger.error("更新插件nonebot-plugin-evenrmonitor时发生错误", "检查更新", e=e)
-            await matcher.send(f"更新插件nonebot-plugin-evenrmonitor时发生错误 \n{type(e)}: {e}")
+            logger.error("备份更新插件nonebot-plugin-evenrmonitor时发生错误", e=e)
+            await matcher.send(f"备份更新插件nonebot-plugin-evenrmonitor时发生错误 \n{type(e)}: {e}")
         else:
             if code == 200:
                 await matcher.finish("更新完毕,请重启bot....")
 
-
-
     @staticmethod
     async def check_update(matcher: Matcher):
+        """检查插件更新"""
         logger.info("开始检查插件更新...")
         data = await update.get_latest_version_data()
         if data:
@@ -191,6 +238,7 @@ class Eventmonitor:
 
     @staticmethod
     async def _file_handle():
+        """更新插件"""
         # 接收最新版本号作为参数，并返回处理结果字符串
         
         if not update.temp_dir.exists():
@@ -246,6 +294,7 @@ class Eventmonitor:
         except Exception as e:
             raise e
         os.system(f"poetry run pip install -r {(update_info_file / 'requirements.txt').absolute()}")
+        # 使用os.system命令执行shell命令，安装更新后的依赖包 
         if tf:
             tf.close()
             # 关闭tarfile对象，释放资源
