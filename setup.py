@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="nonebot_plugin_eventmonitor",
-    version="0.3.1",
+    version="0.3.2",
     author="Reversedeer",
     description="监控群事件的插件，支持戳一戳，成员变动，群荣誉，运气王变化等提示",
     long_description=long_description,
@@ -20,13 +20,14 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     packages=setuptools.find_packages(),
-    python_requires=">=3.8",
+    python_requires=">=3.9",
     install_requires = [
         'nonebot2>=2.0.0rc2',
         'nonebot-adapter-onebot>=2.1.3',
         'requests>=2.28.2',
         'httpx>=0.23.1'
         'poetry>=1.5.0'
+        'pillow>=9.4.0'
         'sqlalchemy>=2.0.19'
         'nonebot-plugin-apscheduler>=0.1.3'
 
