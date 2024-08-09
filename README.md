@@ -1,29 +1,27 @@
 <p align="center">
-  <a href="https://nonebot.dev">
-    <img src="https://nonebot.dev/logo.png" width="180" height="180" alt="NoneBot">
-  </a>
+  <a href="https://nonebot.dev/"><img src="https://nonebot.dev/logo.png" width="200" height="200" alt="nonebot"></a>
 </p>
 
 <div align="center">
-# nonebot_plugin_eventmonitor
-
-✨ 基于 NoneBot2 实现的 监测 QQ 群事件，群荣誉事件的插件 ✨
-
+# nonebot-plugin-sunoai
+_✨ 基于 NoneBot2 实现的 监测 QQ 群事件，群荣誉事件的插件 ✨_
 </div>
 
 <p align="center">
   <a href="https://raw.githubusercontent.com/Reversedeer/nonebot_plugin_eventmonitor/main/LICENSE">
-    <img src="https://img.shields.io/github/license/Reversedeer/nonebot_plugin_eventmonitor" alt="license">
+  	<img src="https://img.shields.io/github/license/Reversedeer/nonebot_plugin_eventmonitor" alt="license">
   </a>
-  <a href="https://camo.githubusercontent.com/c5bfbde247cd10e93ff50a518b0f5e441a6e9959495f6bf0f1a1913d2b1b7a8d/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f707974686f6e2d332e382b2d626c75652e737667">
-    <img src="https://img.shields.io/badge/python-3.8+-green.svg" alt="python">
+  <a href="https://pypi.org/project/nonebot-plugin-eventmonitor">
+	<img src="https://img.shields.io/pypi/v/nonebot-plugin-eventmonitor?logo=python&logoColor=edb641" alt="pypi">
   </a>
-  <a href="https://github.com/howmanybots/onebot/blob/master/README.md">
-    <img src="https://img.shields.io/badge/NoneBot2-blue?style=flat&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABABAMAAABYR2ztAAAAIVBMVEUAAAAAAAADAwMHBwceHh4UFBQNDQ0ZGRkoKCgvLy8iIiLWSdWYAAAAAXRSTlMAQObYZgAAAQVJREFUSMftlM0RgjAQhV+0ATYK6i1Xb+iMd0qgBEqgBEuwBOxU2QDKsjvojQPvkJ/ZL5sXkgWrFirK4MibYUdE3OR2nEpuKz1/q8CdNxNQgthZCXYVLjyoDQftaKuniHHWRnPh2GCUetR2/9HsMAXyUT4/3UHwtQT2AggSCGKeSAsFnxBIOuAggdh3AKTL7pDuCyABcMb0aQP7aM4AnAbc/wHwA5D2wDHTTe56gIIOUA/4YYV2e1sg713PXdZJAuncdZMAGkAukU9OAn40O849+0ornPwT93rphWF0mgAbauUrEOthlX8Zu7P5A6kZyKCJy75hhw1Mgr9RAUvX7A3csGqZegEdniCx30c3agAAAABJRU5ErkJggg==" alt="cqhttp">
+  	<img src="https://img.shields.io/badge/python-3.9+-blue?logo=python&logoColor=edb641" alt="python">
+  <a href="https://nonebot.dev/">
+    <img src="https://img.shields.io/badge/NoneBot2-blue?style=flat&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABABAMAAABYR2ztAAAAIVBMVEUAAAAAAAADAwMHBwceHh4UFBQNDQ0ZGRkoKCgvLy8iIiLWSdWYAAAAAXRSTlMAQObYZgAAAQVJREFUSMftlM0RgjAQhV+0ATYK6i1Xb+iMd0qgBEqgBEuwBOxU2QDKsjvojQPvkJ/ZL5sXkgWrFirK4MibYUdE3OR2nEpuKz1/q8CdNxNQgthZCXYVLjyoDQftaKuniHHWRnPh2GCUetR2/9HsMAXyUT4/3UHwtQT2AggSCGKeSAsFnxBIOuAggdh3AKTL7pDuCyABcMb0aQP7aM4AnAbc/wHwA5D2wDHTTe56gIIOUA/4YYV2e1sg713PXdZJAuncdZMAGkAukU9OAn40O849+0ornPwT93rphWF0mgAbauUrEOthlX8Zu7P5A6kZyKCJy75hhw1Mgr9RAUvX7A3csGqZegEdniCx30c3agAAAABJRU5ErkJggg==" alt="Nonebot2">
   </a>
 </p>
 
-## 介绍：求 Star✨
+
+## 介绍:
 
 > 监测群组的以下变动事件：
 >
@@ -58,35 +56,36 @@
 
 ### nb-cli
 
+```python
+nb plugin install nonebot-plugin-eventmonitor
 ```
-nb plugin install nonebot_plugin_eventmonitor
+
+### pip
+
+
+```python
+pip install nonebot-plugin-eventmonitor
 ```
 
-<details>
-    <summary><h3>pip</h3></summary>
+#### 在’pyproject.toml‘文件中写入
 
-    pip install nonebot-plugin-eventmonitor
-
-在’pyproject.toml‘文件中写入
-
-    "nonebot_plugin_eventmonitor"
-
-</details>
+    plugins = ["nonebot_plugin_nonebot_plugin_eventmonitor"]
 
 ### 更新：
 
-```
+```python
 pip install --upgrade nonebot-plugin-eventmonitor
 ```
 
 ## 配置
 
-|   config   |   type   | default  |        example        |                                                 usage                                                 |
-| :--------: | :------: | :------: | :-------------------: | :---------------------------------------------------------------------------------------------------: |
-|  chuo_cd   |   int    |    10    |     chuo_cd = 10      |                                              戳一戳的 cd                                              |
-| SUPERUSERS | set[str] |  set()   | SUPERUSERS=["114514"] |  机器人超级用户，可以使用权限 [`SUPERUSER`](https://nonebot.dev/docs/2.0.0/api/permission#SUPERUSER)  |
+|   config   |   type   | default  |        example        |                             usag                             |
+| :--------: | :------: | :------: | :-------------------: | :----------------------------------------------------------: |
+| SUPERUSERS | set[str] |  set()   | SUPERUSERS=["114514"] | 机器人超级用户，可以使用权限 [`SUPERUSER`](https://nonebot.dev/docs/2.0.0/api/permission#SUPERUSER) |
 |  NICKNAME  | set[str] | set(Bot) |   NICKNAME=["IKun"]   | 机器人昵称，通常协议适配器会根据用户是否 @user 或者是否以机器人昵称开头来判断是否是向机器人发送的消息 |
-|  isalive   |   bool   |   True   |    isalive = True     |                                         是否启用插件自动更新                                          |
+|  isalive   |   bool   |   True   |    isalive = True     |                     是否启用插件自动更新                     |
+| event_img  |   bool   |  False   |   event_img = false   |                      是否启用文字转图片                      |
+|  chuo_cd   |   int    |    10    |     chuo_cd = 10      |                         戳一戳的 cd                          |
 
 ## 指令帮助
 
@@ -94,7 +93,7 @@ pip install --upgrade nonebot-plugin-eventmonitor
 User: (戳一戳-> bot)
 Bot: "请不要戳AI-Md >_<"
 
-SUPERUSER/GROUP_ADMIN/GROUP_OWNER: "/检查检查eventr更新"
+SUPERUSER: "/更新插件eventmonitor"
 Bot: "
     ✨插件自动检测更新✨
     插件名称:nonebot-plugin-eventmonitor
@@ -129,8 +128,9 @@ usage = """
     指令5：群成员增加检测(当有人入群时，发送入群欢迎，当bot首次入群会乞讨管理，当主人/superuser入群会有特殊回复)
     指令6：管理员变动检测(当新增管理员或取消管理员时发送消息提示，当bot自身被上/下管理时有特殊回复)
     指令7：运气王检测(检测抢红包检测后的运气王并发送提示消息)
-    指令8：检查event更新
-    指令9：重启
+    指令8：更新插件eventmonitor(指令更新插件)
+    指令9: event配置(当前群各事件检测开启状态)
+    指令10：重启
     """
 
 
@@ -152,15 +152,19 @@ json结构(默认值):
 
 - [x] 更多的事件检测功能
 - [x] 事件检测功能开关
-- [ ] 文字转图片发送
+- [x] 定时任务
+- [x] 文字转图片发送
 
 <details>
     <summary><h2>更新日志</h2></summary>
 
-- v0.3.1
+- v0.3.2
 
+  - ✨新增插件定时任务
+  
+- v0.3.1
   - ♻ 重构项目
-  - 🚨 新增插件自动更新
+  - ✨ 新增插件自动更新
   - 🐛 修复红包运气王无法检测 bug
   - 🐛 修复自动更新时意外报错 bug
 
@@ -177,14 +181,14 @@ json结构(默认值):
   - ✅ 优化提示
 
 - v0.1.9
-  - 🚨 新增功能开关指令：event 状态/event 配置
+  - ✨新增功能开关指令：event 状态/event 配置
   - 🐛 修复群文件不能检测 bug(少写一个字母 qwq)
   - ✅ 优化目录结构
 - v0.1.7
 
-  - 🚨 新增所有功能开关[#issue5](https://github.com/Reversedeer/nonebot_plugin_eventmonitor/issues/9)
+  - ✨ 新增所有功能开关[#issue5](https://github.com/Reversedeer/nonebot_plugin_eventmonitor/issues/9)
 
-  - 🚨 新增权限控制
+  - ✨ 新增权限控制
   - 🐛 修复潜在的 bug
 
 - v0.1.6
@@ -197,7 +201,7 @@ json结构(默认值):
   - 🐛 修复配置文件 bug
 - v0.1.2
 
-  - 🚨 增加戳一戳的文案
+  - ✨ 增加戳一戳的文案
 
   - 🐛 修复 bug
 
@@ -206,7 +210,7 @@ json结构(默认值):
   - 🐛 修复 bug
 
 - v0.1.0
-  - 🚨 新增戳一戳加了 cd（本人觉得功能鸡肋）
+  - ✨ 新增戳一戳加了 cd（本人觉得功能鸡肋）
   - 🐛 修复管理员变动时 API 报错问题[#issue1](https://github.com/Reversedeer/nonebot_plugin_eventmonitor/issues/1)
   - ✅ 抛弃原有的配置模式
 - v0.0.6
@@ -234,3 +238,4 @@ json结构(默认值):
 ## 其他插件
 
 [nonebot-plugin-dog(获取舔狗文案，汪！)](https://github.com/Reversedeer/nonebot_plugin_dog)
+
