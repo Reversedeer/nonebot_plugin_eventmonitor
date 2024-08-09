@@ -1,3 +1,4 @@
+"""插件更新"""
 import os
 import httpx
 import nonebot
