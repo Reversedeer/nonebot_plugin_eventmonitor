@@ -7,7 +7,6 @@ from nonebot.params import ArgStr
 from nonebot import get_driver, require
 from nonebot.permission import SUPERUSER
 from nonebot.plugin import on_notice, on_command
-from  nonebot_plugin_apscheduler import scheduler
 from nonebot.adapters.onebot.v11.permission import GROUP_OWNER, GROUP_ADMIN
 
 from .utils import utils
@@ -15,6 +14,8 @@ from .update import update
 from .handle import eventmonitor
 
 require("nonebot_plugin_apscheduler")
+
+from  nonebot_plugin_apscheduler import scheduler
 
 scheduler.add_job(update.auto_check_bot_update, 'cron', hour = 8, misfire_grace_time=600)
 
