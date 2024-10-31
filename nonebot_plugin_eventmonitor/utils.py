@@ -222,6 +222,7 @@ class Utils:
             return False
         return check_txt_img
 
+
     def get_function_name(self, key: str) -> str:
         """根据关键词获取对应功能名称"""
         return self.path[key][0]

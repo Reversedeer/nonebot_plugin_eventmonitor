@@ -7,6 +7,7 @@ from nonebot.params import ArgStr
 from nonebot import get_driver, require
 from nonebot.permission import SUPERUSER
 from nonebot.plugin import on_notice, on_command
+
 from nonebot.adapters.onebot.v11.permission import GROUP_OWNER, GROUP_ADMIN
 
 from .utils import utils
@@ -135,6 +136,7 @@ async def _(flag: str = ArgStr("flag")) -> None:
             os.system("./restart.sh")
     else:
         await restart.send("已取消操作...")
+
 
 
 with contextlib.suppress(Exception):
