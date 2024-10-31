@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "nonebot-plugin-eventmonitor"
+version = "0.3.2"
+description = "监控群事件的插件，支持戳一戳，成员变动，群荣誉，运气王变化等提示"
+license = "MIT"
+authors = ["Reversedeer"]
+readme = "README.md"
+homepage = "https://github.com/Reversedeer/nonebot_plugin_eventmonitor"
+repository = "https://github.com/Reversedeer/nonebot_plugin_eventmonitor"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+httpx = "^0.23.1"
+poetry = "^1.5.0"
+pillow = ">=9.4.0"
+requests = ">=2.28.2"
+sqlalchemy = ">=2.0.19"
+nonebot2 = ">=2.0.0rc2"
+nonebot-adapter-onebot = ">=2.1.3"
+nonebot-plugin-apscheduler = ">=0.1.3"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
