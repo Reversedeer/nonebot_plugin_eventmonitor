@@ -45,18 +45,19 @@ _✨ 基于 NoneBot2 实现的 监测 QQ 群事件，群荣誉事件的插件✨
 
 > [!WARNING]
 >
-> 从 v0.3.x 开始，自动更新必须满足以下要求：
+> ~~从 v0.3.x 开始，自动更新必须满足以下要求：~~
 >
-> 1.使用前请确保插件位置移动至: /xxx/awesome-bot/src/plugins/
+> ~~1.使用前请确保插件位置移动至: /xxx/awesome-bot/src/plugins/~~
 >
-> 2.请确保所有依赖正常加载
+> 弃用了使用指令更新插件的功能（目前仅可手动检查更新）
 >
-> 3.使用 nb-cli 或 nb plugin install 方式安装插件的，pyproject.toml 修改参考：
+> 因为使用localstore管理插件数据，所以你需要迁移config.json
 >
-> ```
-> plugins = ["nonebot_plugin_apscheduler"]
-> plugin_dirs = ["src/plugins"]
-> ```
+> 原数据目录：/xxx/awesome-bot/data/eventmonitor/config.json
+>
+> 迁移位置请移步[数据存储](https://nonebot.dev/docs/next/best-practice/data-storing)
+
+
 
 ## 安装方式
 
@@ -89,8 +90,8 @@ pip install --upgrade nonebot-plugin-eventmonitor
 |   config   |   type   | default  |        example        |                             usag                             |
 | :--------: | :------: | :------: | :-------------------: | :----------------------------------------------------------: |
 | SUPERUSERS | set[str] |  set()   | SUPERUSERS=["114514"] | 机器人超级用户，可以使用权限 [`SUPERUSER`](https://nonebot.dev/docs/2.0.0/api/permission#SUPERUSER) |
-|  NICKNAME  | set[str] | set(Bot) |   NICKNAME=["IKun"]   | 机器人昵称，通常协议适配器会根据用户是否 @user 或者是否以机器人昵称开头来判断是否是向机器人发送的消息 |
-|  isalive   |   bool   |   True   |    isalive = True     |                     是否启用插件自动更新                     |
+|  NICKNAME  | set[str] | set(Bot) |   NICKNAME=["IKun"]   |                          机器人昵称                          |
+|  isalive   |   bool   |   True   |    isalive = True     |                     是否启用插件检测更新                     |
 | event_img  |   bool   |  False   |   event_img = false   |                      是否启用文字转图片                      |
 |  chuo_cd   |   int    |    10    |     chuo_cd = 10      |                         戳一戳的 cd                          |
 
@@ -100,18 +101,18 @@ pip install --upgrade nonebot-plugin-eventmonitor
 User: (戳一戳-> bot)
 Bot: "请不要戳AI-Md >_<"
 
-SUPERUSER: "/更新插件eventmonitor"
+SUPERUSER: "/检查event更新"
 Bot: "
     ✨插件自动检测更新✨
     插件名称:nonebot-plugin-eventmonitor
     更新日期：xxxx.xx.xx
-    版本: 0.2.x -> 0.3.x
+    版本: 0.3.x -> 0.4.x
 	"
 
 SUPERUSER/GROUP_ADMIN/GROUP_OWNER: "/开启 群荣誉检测"
 Bot: "群荣誉检测功能已开启喵"
 
-SUPERUSER/GROUP_ADMIN/GROUP_OWNER: "/event配置"
+SUPERUSER/GROUP_ADMIN/GROUP_OWNER: "/eventstatus"
 Bot: "
 	群114514的Event配置状态：
 	戳一戳: 开启
@@ -121,6 +122,13 @@ Bot: "
 	群成员增加检测: 开启
 	管理员变动检测: 开启
 	运气王检测: 关闭
+	"
+	
+SUPERUSER/GROUP_ADMIN/GROUP_OWNER: "/eventhelp"
+Bot: "
+	指令1：戳一戳(戳一戳bot获取文案)
+	指令2：群荣誉监测(检测群聊中龙王，群聊之火，快乐源泉的获得并发送提示，当 bot获得群荣誉时有特殊消息)
+	... ...
 	"
 ```
 
@@ -135,9 +143,10 @@ usage = """
     指令5：群成员增加检测(当有人入群时，发送入群欢迎，当bot首次入群会乞讨管理，当主人/superuser入群会有特殊回复)
     指令6：管理员变动检测(当新增管理员或取消管理员时发送消息提示，当bot自身被上/下管理时有特殊回复)
     指令7：运气王检测(检测抢红包检测后的运气王并发送提示消息)
-    指令8：更新插件eventmonitor(指令更新插件)
-    指令9: event配置(当前群各事件检测开启状态)
-    指令10：重启
+    指令8：检查event更新|checkeventupdate
+    指令9：event配置|eventstatus
+    指令10：开启|关闭文案
+    指令11：event指令帮助|eventhelp
     """
 
 
@@ -161,15 +170,23 @@ json结构(默认值):
 - [x] 事件检测功能开关
 - [x] 定时任务
 - [x] 文字转图片发送
+- [ ] 插件自动更新
 
 <details>
     <summary><h2>更新日志</h2></summary>
 
-- v0.3.2
+- v0.4.0
 
+  - ✨使用Localstore管理插件数据
+  
+  - ✨重构代码，增加可读性便于维护
+  
+  - 💥弃用插件指令自动更新（仅可手动更新）
+  
+- v0.3.2
   - ✨新增插件定时任务
   - ✨新增消息文字转图片
-  
+
 - v0.3.1
   - ♻ 重构项目
   - ✨ 新增插件自动更新
@@ -246,3 +263,5 @@ json结构(默认值):
 ## 其他插件
 
 [nonebot-plugin-dog(获取舔狗文案，汪！)](https://github.com/Reversedeer/nonebot_plugin_dog)
+
+[nonebot-plugin-hyp(查询hypixel玩家数据)](https://github.com/Reversedeer/nonebot_plugin_hyp)
