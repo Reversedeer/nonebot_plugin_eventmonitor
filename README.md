@@ -43,19 +43,27 @@ _✨ 基于 NoneBot2 实现的 监测 QQ 群事件，群荣誉事件的插件✨
 >
 > 群成员荣誉变更时，发送变更通知
 
-> [!WARNING]
+> [!CAUTION]
 >
 > ~~从 v0.3.x 开始，自动更新必须满足以下要求：~~
 >
 > ~~1.使用前请确保插件位置移动至: /xxx/awesome-bot/src/plugins/~~
 >
-> 弃用了使用指令更新插件的功能（目前仅可手动检查更新）
+> 弃用了使用指令更新插件的功能（目前仅可手动检查更新)
+
+> [!TIP]
 >
-> 因为使用localstore管理插件数据，所以你需要迁移config.json
+> 本插件从v0.4.0开始使用localstore管理插件数据，若需要使用旧配置，请使用~~迁移脚本~~迁移config.json
+>
+> 若想全新开始，插件已初始化并配置好默认值，请使用指令按需修改
+
+> [!IMPORTANT]
+>
+> **手动迁移方法：**
 >
 > 原数据目录：/xxx/awesome-bot/data/eventmonitor/config.json
 >
-> 迁移位置请移步[数据存储](https://nonebot.dev/docs/next/best-practice/data-storing)
+> 目标位置请移步[数据存储](https://nonebot.dev/docs/next/best-practice/data-storing)
 
 
 
@@ -67,7 +75,8 @@ _✨ 基于 NoneBot2 实现的 监测 QQ 群事件，群荣誉事件的插件✨
 nb plugin install nonebot-plugin-eventmonitor
 ```
 
-### pip
+<details>
+    <summary><h2>pip</h2></summary>
 
 
 ```python
@@ -83,6 +92,8 @@ pip install nonebot-plugin-eventmonitor
 ```python
 pip install --upgrade nonebot-plugin-eventmonitor
 ```
+
+</details>
 
 ## 配置
 
