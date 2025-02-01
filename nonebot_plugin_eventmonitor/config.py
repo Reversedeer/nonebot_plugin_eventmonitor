@@ -22,9 +22,9 @@ from nonebot.adapters.onebot.v11 import (
 class Config(BaseModel):
     """配置文件"""
 
-    chuo_cd: int = 10
-    check_bot_update: bool = True
-    check_txt_img: bool = False
+    event_chuo_cd: int = 10
+    event_check_plugin_update: bool = True
+    event_check_txt_img: bool = False
     nickname: list[str] = []
     superusers: list[int] = []
 
@@ -55,10 +55,9 @@ class Utils:
             'admin': ['管理员变动检测'],
             'red_package': ['运气王检测'],
         }
-        self.notAllow = '功能未开启'
         self.g_temp = {}
         self.chuo_CD_dir = {}
-        self.current_version = '0.4.0'
+        self.current_version = 'v0.4.1'
         self.config_path: Path = store.get_plugin_config_dir()
         self.data_address: Path = self.config_path / 'config.json'
         self.release_url = 'https://api.github.com/repos/Reversedeer/nonebot_plugin_eventmonitor/releases/latest'
@@ -203,7 +202,7 @@ class Utils:
     @staticmethod
     async def check_txt_to_img(enable_check: bool) -> bool:  # noqa: FBT001
         """检查文本转图片是否允许"""
-        if not config_data.check_txt_img:
+        if not config_data.event_check_txt_img:
             return False
         return enable_check
 
