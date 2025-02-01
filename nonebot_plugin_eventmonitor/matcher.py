@@ -7,14 +7,13 @@ from datetime import datetime, timezone
 from nonebot.adapters.onebot.v11 import MessageSegment
 from nonebot.adapters.onebot.v11.message import Message
 
-from .config import config_data
+from .config import utils, config_data
 from .chuo_message import chuo_msg
 
 
 class Matcher:
     async def admin_changer(self, sub_type: str, user_id: int, bot_qq: int) -> str:
         """发送管理员变动消息"""
-        admin_msg = ''
         # 根据管理员变动类型选择不同的消息
         if sub_type == 'set':
             # 如果用户ID等于机器人的QQ号，返回特定消息
@@ -32,7 +31,6 @@ class Matcher:
     async def del_user_bye(self, del_time: int, user_id: int) -> str | Message:
         """发送退群消息"""
         del_datatime = datetime.fromtimestamp(del_time, tz=timezone.utc)
-        rely = ''
         # 检查用户ID是否在超级用户列表superusers中
         if user_id in config_data.superusers:
             # 如果是超级用户，生成特定的离开消息
@@ -51,7 +49,6 @@ class Matcher:
         """发送入群消息"""
         # 将时间戳转换为datetime类型的时间add_time
         add_datetime = datetime.fromtimestamp(add_time, tz=timezone.utc)
-        rely = ''
         # 判断用户ID是否等于机器人的QQ号
         if user_id == bot_qq:
             # 如果是机器人自己加入群组，生成特定的欢迎消息
@@ -70,7 +67,6 @@ class Matcher:
 
     async def monitor_rongyu(self, honor_type: str, user_id: int, bot_qq: int) -> str:
         """发送群荣誉变化消息"""
-        rely = ''
         # 根据honor_type选择不同的消息
         if honor_type == 'emotion':
             # 如果用户ID等于机器人的QQ号，不作任何操作
@@ -109,7 +105,6 @@ class Matcher:
 
     async def rad_package_change(self, target_id: int, bot_qq: int) -> str:
         """发送运气王变化消息"""
-        rely = ''
         if target_id == bot_qq:
             rely = '你们又不行了，本喵喜提运气王🧧'
         elif target_id in config_data.superusers:
@@ -131,6 +126,26 @@ class Matcher:
             + '\n上传了新文件，感谢你一直为群里做贡献喵~'
             + MessageSegment.face(175)
         )
+
+    async def update_msg(self, current: str, latest: str, data: dict) -> str:
+        if current == latest:
+            message: str = f'插件已是最新版本:{utils.current_version}'
+        elif current < latest:
+            message_template: str = (
+                '✨检测到插件更新✨\n'
+                '插件名称：nonebot-plugin-eventmonitor\n'
+                f'更新日期：{data["published_at"]}\n'
+                f'版本变化：{utils.current_version} -> {data["tag_name"]}\n'
+                f'更新日志：\n{data["body"]}'
+            )
+            message: str = message_template
+        else:
+            message: str = (
+                '🚨检测插件更新时发现错误🚨\n'
+                f'版本变化：{utils.current_version} -> {data["tag_name"]}\n'
+                '请检查更新日志并核查本地版本号'
+            )
+        return message
 
 
 message = Matcher()

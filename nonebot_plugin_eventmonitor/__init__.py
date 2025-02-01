@@ -15,21 +15,19 @@ from .handle import eventmonitor
 require('nonebot_plugin_localstore')
 require('nonebot_plugin_apscheduler')
 
-scheduler.add_job(
-    eventmonitor.check_plugin_update,
-    'cron',
-    hour=8,
-    misfire_grace_time=600,
-)
-
 
 driver = get_driver()
+
+
+@scheduler.scheduled_job('cron', hour=8, misfire_grace_time=600)
+async def plugin_update() -> None:
+    await eventmonitor.check_plugin()
 
 
 @driver.on_bot_connect
 async def _() -> None:
     await utils.init()
-    await eventmonitor.check_plugin_update()
+    await eventmonitor.check_plugin()
 
 
 # 戳一戳
@@ -43,42 +41,42 @@ chuo = on_notice(
 qrongyu = on_notice(
     rule=utils.rongyu,
     priority=50,
-    block=True,
+    block=False,
     handlers=[eventmonitor.qrongyu],
 )
 # 群文件
 files = on_notice(
     rule=utils.checker,
     priority=50,
-    block=True,
+    block=False,
     handlers=[eventmonitor.files],
 )
 # 群员减少
 del_user = on_notice(
     rule=utils.del_user,
     priority=50,
-    block=True,
+    block=False,
     handlers=[eventmonitor.del_user],
 )
 # 群员增加
 add_user = on_notice(
     rule=utils.add_user,
     priority=50,
-    block=True,
+    block=False,
     handlers=[eventmonitor.add_user],
 )
 # 群管理
 group_admin = on_notice(
     rule=utils.admin_change,
     priority=50,
-    block=True,
+    block=False,
     handlers=[eventmonitor.admin_chance],
 )
 # 红包
 red_packet = on_notice(
     rule=utils.red_packet,
     priority=50,
-    block=True,
+    block=False,
     handlers=[eventmonitor.hongbao],
 )
 
@@ -96,7 +94,7 @@ on_command(
     aliases={'event配置'},
     permission=SUPERUSER | GROUP_ADMIN | GROUP_OWNER,
     priority=10,
-    block=True,
+    block=False,
     handlers=[eventmonitor.state],
 )
 
@@ -105,7 +103,7 @@ on_command(
     aliases={'checkeventupdate'},
     priority=1,
     permission=SUPERUSER,
-    block=False,
+    block=True,
     handlers=[eventmonitor.check_plugin],
 )
 
@@ -113,7 +111,7 @@ on_command(
     'event帮助',
     aliases={'eventhelp'},
     priority=20,
-    block=True,
+    block=False,
     handlers=[eventmonitor.usage],
 )
 
@@ -128,7 +126,7 @@ __plugin_meta__ = PluginMetadata(
     supported_adapters={'~onebot.v11'},
     extra={
         'author': 'Reversedeer',
-        'version': '0.4.0',
+        'version': '0.4.1',
         'priority': 50,
         'email': 'ysjvillmark@gmail.com',
     },
