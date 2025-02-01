@@ -95,16 +95,16 @@ pip install --upgrade nonebot-plugin-eventmonitor
 
 </details>
 
-## 配置
+## 配置(必填)
 
 
-|   config   |   type   | default  |        example        |                             usag                             |
-| :--------: | :------: | :------: | :-------------------: | :----------------------------------------------------------: |
-| SUPERUSERS | set[str] |  set()   | SUPERUSERS=["114514"] | 机器人超级用户，可以使用权限 [`SUPERUSER`](https://nonebot.dev/docs/2.0.0/api/permission#SUPERUSER) |
-|  NICKNAME  | set[str] | set(Bot) |   NICKNAME=["IKun"]   |                          机器人昵称                          |
-|  isalive   |   bool   |   True   |    isalive = True     |                     是否启用插件检测更新                     |
-| event_img  |   bool   |  False   |   event_img = false   |                      是否启用文字转图片                      |
-|  chuo_cd   |   int    |    10    |     chuo_cd = 10      |                         戳一戳的 cd                          |
+|          config           |   type   | default  |             example              |                             usag                             |
+| :-----------------------: | :------: | :------: | :------------------------------: | :----------------------------------------------------------: |
+|        SUPERUSERS         | set[str] |  set()   |      SUPERUSERS=["114514"]       | 机器人超级用户，可以使用权限 [`SUPERUSER`](https://nonebot.dev/docs/2.0.0/api/permission#SUPERUSER) |
+|         NICKNAME          | set[str] | set(Bot) |        NICKNAME=["IKun"]         |                          机器人昵称                          |
+| event_check_plugin_update |   bool   |   True   | event_check_plugin_update = True |                     是否启用插件检测更新                     |
+|    event_check_txt_img    |   bool   |  False   |    event_check_txt_img= false    |                      是否启用文字转图片                      |
+|       event_chuo_cd       |   int    |    10    |        event_chuo_cd= 10         |                         戳一戳的 cd                          |
 
 ## 指令帮助
 
@@ -186,53 +186,51 @@ json结构(默认值):
 <details>
     <summary><h2>更新日志</h2></summary>
 
-- v0.4.0
+- v0.4.1
 
+  - 🐛修复配置文件读取错误
+  - 🐛修复版本号读取错误
+  
+- v0.4.0
   - ✨使用Localstore管理插件数据
-  
+
   - ✨重构代码，增加可读性便于维护
-  
+
   - 💥弃用插件指令自动更新（仅可手动更新）
-  
 - v0.3.2
   - ✨新增插件定时任务
   - ✨新增消息文字转图片
-
 - v0.3.1
   - ♻ 重构项目
   - ✨ 新增插件自动更新
   - 🐛 修复红包运气王无法检测 bug
   - 🐛 修复自动更新时意外报错 bug
-
 - v0.2.1
 
   - ✨ 适配插件元数据
 
   - 🐛 修复 bug
-
 - v0.2.0
 
   - 🐛 修复 bot 加群 bug[issue6](https://github.com/Reversedeer/nonebot_plugin_eventmonitor/issues/18)
 
-  - ✅ 优化提示
-
+  - ♻️ 优化提示
 - v0.1.9
-  - ✨新增功能开关指令：event 状态/event 配置
+  - ✨ 新增功能开关指令：event 状态/event 配置
   - 🐛 修复群文件不能检测 bug(少写一个字母 qwq)
-  - ✅ 优化目录结构
+  - ♻️ 优化目录结构
 - v0.1.7
 
   - ✨ 新增所有功能开关[#issue5](https://github.com/Reversedeer/nonebot_plugin_eventmonitor/issues/9)
 
   - ✨ 新增权限控制
   - 🐛 修复潜在的 bug
-
 - v0.1.6
   - 🐛 修复 bug
 - v0.1.5
   - 🐛 修复获取 superusers 数值 bug
-  - ✅ 优化配置文件 [#issue4](https://github.com/Reversedeer/nonebot_plugin_eventmonitor/issues/6)
-  - ✅ 删除冗余代码
+  - ♻️ 优化配置文件 [#issue4](https://github.com/Reversedeer/nonebot_plugin_eventmonitor/issues/6)
+  - 💥 删除冗余代码
 - v0.1.3
   - 🐛 修复配置文件 bug
 - v0.1.2
@@ -240,15 +238,13 @@ json结构(默认值):
   - ✨ 增加戳一戳的文案
 
   - 🐛 修复 bug
-
 - v0.1.1
 
   - 🐛 修复 bug
-
 - v0.1.0
   - ✨ 新增戳一戳加了 cd（本人觉得功能鸡肋）
   - 🐛 修复管理员变动时 API 报错问题[#issue1](https://github.com/Reversedeer/nonebot_plugin_eventmonitor/issues/1)
-  - ✅ 抛弃原有的配置模式
+  - ♻️ 优化原有的配置模式
 - v0.0.6
   - 🐛 修复了大量的 bug
   </details>
