@@ -1583,9 +1583,10 @@ url = "http://mirrors.aliyun.com/pypi/simple"
 reference = "aliyun"
 
 [extras]
+fastapi = ["nonebot2"]
 httpx = ["httpx"]
 
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.9"
-content-hash = "ec596ac4d5526cb63500ca5f0100df056330bbe8fffe33a13705a9f0d487df87"
+content-hash = "e99a87bef5a549a4234c005d51eb391cb18004c8591a85fa8d5fb765a28fe2e7"
