@@ -20,6 +20,7 @@ httpx = { version = ">=0.26.0,<1.0.0", extras = ["http2"], optional = true }
 [tool.poetry.extras]
 httpx = ["httpx"]
 fastapi = ["nonebot2"]
+all = ["httpx", "fastapi"]
 
 [tool.poetry.group.dev.dependencies]
 nonebug = "^0.4.0"
