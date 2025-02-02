@@ -29,6 +29,7 @@ jobs:
         run: |
           poetry install --extras httpx
           poetry install --extras fastapi
+          poetry install --with dev
 
       - name: Install plugin
         run: |
