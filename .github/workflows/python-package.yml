@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.9", "3.10", "3.11"]
+        python-version: ["3.9", "3.10", "3.11", "3.12"]
       fail-fast: false
       max-parallel: 3
 
@@ -28,7 +28,8 @@ jobs:
       - name: Install dependencies
         run: |
           poetry install --extras httpx
-          poetry run nb --version
+          poetry install --extras fastapi
+          poetry install --with dev
 
       - name: Install plugin
         run: |
