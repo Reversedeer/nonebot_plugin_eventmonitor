@@ -27,7 +27,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          poetry install --with httpx
+          poetry install --extras httpx
 
       - name: Install plugin
         run: |
