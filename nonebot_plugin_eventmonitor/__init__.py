@@ -12,14 +12,14 @@ from nonebot.adapters.onebot.v11.permission import (
 from .config import Config, utils
 from .handle import eventmonitor
 
-require('nonebot_plugin_localstore')
-require('nonebot_plugin_apscheduler')
+require("nonebot_plugin_localstore")
+require("nonebot_plugin_apscheduler")
 
 
 driver = get_driver()
 
 
-@scheduler.scheduled_job('cron', hour=8, misfire_grace_time=600)
+@scheduler.scheduled_job("cron", hour=8, misfire_grace_time=600)
 async def plugin_update() -> None:
     await eventmonitor.check_plugin()
 
@@ -81,8 +81,8 @@ red_packet = on_notice(
 )
 
 on_command(
-    '开启',
-    aliases={'关闭'},
+    "开启",
+    aliases={"关闭"},
     priority=10,
     permission=SUPERUSER | GROUP_ADMIN | GROUP_OWNER,
     block=True,
@@ -90,8 +90,8 @@ on_command(
 )
 
 on_command(
-    'eventstatus',
-    aliases={'event配置'},
+    "eventstatus",
+    aliases={"event配置"},
     permission=SUPERUSER | GROUP_ADMIN | GROUP_OWNER,
     priority=10,
     block=False,
@@ -99,8 +99,8 @@ on_command(
 )
 
 on_command(
-    '检查event更新',
-    aliases={'checkeventupdate'},
+    "检查event更新",
+    aliases={"checkeventupdate"},
     priority=1,
     permission=SUPERUSER,
     block=True,
@@ -108,8 +108,8 @@ on_command(
 )
 
 on_command(
-    'event帮助',
-    aliases={'eventhelp'},
+    "event帮助",
+    aliases={"eventhelp"},
     priority=20,
     block=False,
     handlers=[eventmonitor.usage],
@@ -117,17 +117,17 @@ on_command(
 
 
 __plugin_meta__ = PluginMetadata(
-    name='nonebot-plugin-eventmonitor',
-    description='监控群事件的插件，支持戳一戳，成员变动，群荣誉变化等提示的插件',
+    name="nonebot-plugin-eventmonitor",
+    description="监控群事件的插件，支持戳一戳，成员变动，群荣誉变化等提示的插件",
     usage=utils.usage,
-    type='application',
+    type="application",
     config=Config,
-    homepage='https://github.com/Reversedeer/nonebot_plugin_eventmonitor',
-    supported_adapters={'~onebot.v11'},
+    homepage="https://github.com/Reversedeer/nonebot_plugin_eventmonitor",
+    supported_adapters={"~onebot.v11"},
     extra={
-        'author': 'Reversedeer',
-        'version': '0.4.1',
-        'priority': 50,
-        'email': 'ysjvillmark@gmail.com',
+        "author": "Reversedeer",
+        "version": "0.4.2",
+        "priority": 50,
+        "email": "ysjvillmark@gmail.com",
     },
 )
