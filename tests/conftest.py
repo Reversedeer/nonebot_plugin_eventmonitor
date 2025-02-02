@@ -4,11 +4,9 @@ from nonebot import get_driver, load_plugins
 
 
 @pytest.fixture(scope="session", autouse=True)
-def load_plugin():
-    # 加载插件
+def load_plugin() -> None:
     load_plugins("nonebot_plugin_eventmonitor")
 
-    # 注册适配器
     driver = get_driver()
     driver.register_adapter(Adapter)
 

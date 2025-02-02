@@ -9,11 +9,10 @@ from nonebot.adapters.onebot.v11.event import (
 
 
 # 测试戳一戳事件
-async def test_poke_event(app: App):
+async def test_poke_event(app: App) -> None:
     async with app.test_matcher() as ctx:
         bot = ctx.create_bot(base=Bot)
 
-        # 构建戳一戳事件
         event = NotifyEvent(
             time=1629876543,
             self_id=123456,
@@ -24,10 +23,8 @@ async def test_poke_event(app: App):
             group_id=10000,
         )
 
-        # 模拟事件处理
         ctx.receive_event(bot, event)
 
-        # 获取插件生成的响应
         ctx.should_call_api(
             "send_msg",
             **{
@@ -39,7 +36,7 @@ async def test_poke_event(app: App):
 
 
 # 测试新成员入群事件
-async def test_member_increase(app: App):
+async def test_member_increase(app: App) -> None:
     async with app.test_matcher() as ctx:
         bot = ctx.create_bot(base=Bot)
 
@@ -66,7 +63,7 @@ async def test_member_increase(app: App):
 
 
 # 测试群成员离开事件
-async def test_member_decrease(app: App):
+async def test_member_decrease(app: App) -> None:
     async with app.test_matcher() as ctx:
         bot = ctx.create_bot(base=Bot)
 
@@ -92,7 +89,8 @@ async def test_member_decrease(app: App):
         )
 
 
-async def test_lucky_king(app: App):
+# 测试运气王事件
+async def test_lucky_king(app: App) -> None:
     async with app.test_matcher() as ctx:
         bot = ctx.create_bot(base=Bot)
 
