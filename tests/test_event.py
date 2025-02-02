@@ -1,5 +1,5 @@
 from nonebug import App
-from nonebot.adapters.onebot.v11 import Bot, Message
+from nonebot.adapters.onebot.v11 import Bot
 from nonebot.adapters.onebot.v11.event import (
     GroupIncreaseNoticeEvent,
     GroupDecreaseNoticeEvent,
