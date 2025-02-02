@@ -27,12 +27,12 @@ jobs:
 
       - name: Install dependencies
         run: |
-          poetry install --no-root --with httpx
+          poetry install --with httpx
           poetry run nb --version
 
       - name: Install plugin
         run: |
-          poetry install --only-root
+          poetry install
 
       - name: Install test tools
         run: |
