@@ -19,7 +19,6 @@ jobs:
         os: [ubuntu-latest, windows-latest, macos-latest]
         python-version: ["3.9", "3.10", "3.11", "3.12"]
       fail-fast: false
-      max-parallel: 5
 
     steps:
       - uses: actions/checkout@v4
@@ -36,6 +35,11 @@ jobs:
         with:
           virtualenvs-create: true
           virtualenvs-in-project: true
+      - name: Add Poetry to PATH (Windows)
+        if: runner.os == 'Windows'
+        run: |
+        echo "$env:APPDATA\Python\Scripts" >> $env:GITHUB_PATH
+        poetry --version
 
       - name: Install plugin
         run: poetry install
