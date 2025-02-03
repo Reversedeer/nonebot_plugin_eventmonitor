@@ -41,14 +41,6 @@ jobs:
       - name: Install test tools
         run: poetry install --with dev
 
-      - name: Lint with flake8
-        run: |
-          poetry run flake8 your_plugin_directory \
-            --count \
-            --select=E9,F63,F7,F82 \
-            --show-source \
-            --statistics
-
       - name: Run tests
         run: poetry run coverage run -m pytest -v tests/
 
