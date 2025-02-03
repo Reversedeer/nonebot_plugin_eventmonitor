@@ -37,9 +37,7 @@ jobs:
           virtualenvs-in-project: true
       - name: Add Poetry to PATH (Windows)
         if: runner.os == 'Windows'
-        run: |
-        echo "$env:APPDATA\Python\Scripts" >> $env:GITHUB_PATH
-        poetry --version
+        run: echo "$env:APPDATA\Python\Scripts" >> $env:GITHUB_PATH
 
       - name: Install plugin
         run: poetry install
