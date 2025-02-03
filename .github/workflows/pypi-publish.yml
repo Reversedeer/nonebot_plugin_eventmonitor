@@ -3,7 +3,9 @@ name: Publish
 on:
   push:
     tags:
-      - "*"
+      - "v*"
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:
@@ -12,8 +14,12 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       id-token: write
+      contents: write
+
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Python environment
         uses: ./.github/actions/setup-python
@@ -24,15 +30,27 @@ jobs:
           pip install
           build
           --user
-      - name: Build a binary wheel and a source tarball
-        run: >-
-          python -m
-          build
-          --sdist
-          --wheel
-          --outdir dist/
-          .
-      - name: Publish distribution to PyPI
+
+      - name: Build package
+        run: |
+          python -m build --sdist --wheel --outdir dist/ .
+          echo "Build artifacts:" && ls -lh dist/
+
+      - name: Create Github Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: Release ${{ github.ref_name }}
+          generate_release_notes: true
+
+          files: |
+            dist/*.whl
+            dist/*.tar.gz
+          draft: false
+          prerelease: false
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           password: ${{ secrets.PYPI_API_TOKEN }}
