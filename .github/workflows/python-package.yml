@@ -23,6 +23,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v4
@@ -42,13 +44,12 @@ jobs:
         run: poetry install --with dev
 
       - name: Run tests
-        run: poetry run coverage run -m pytest -v tests/
+        run: |
+          pytest --cov-branch --cov-report=xml
 
-      - name: Generate coverage report
-        run: poetry run coverage xml
-
-      - name: Upload to Codecov
-        uses: codecov/codecov-action@v4
+      - name: Upload results to Codecov
+        uses: codecov/codecov-action@v5
         with:
-          files: coverage.xml
+          token: ${{ secrets.CODECOV_TOKEN }}
+          slug: Reversedeer/nonebot_plugin_eventmonitor
           fail_ci_if_error: true
