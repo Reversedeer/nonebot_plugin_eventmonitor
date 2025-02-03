@@ -35,11 +35,6 @@ jobs:
           virtualenvs-create: true
           virtualenvs-in-project: true
 
-      - name: Install dependencies
-        run: |
-          poetry install --extras httpx
-          poetry install --extras fastapi
-
       - name: Install plugin
         run: poetry install
 
