@@ -47,6 +47,9 @@ jobs:
         run: |
           poetry run pytest --cov-branch --cov-report=xml -v tests/
 
+      - name: Generate coverage report
+        run: poetry run coverage xml
+
       - name: Upload results to Codecov
         uses: codecov/codecov-action@v5
         with:
