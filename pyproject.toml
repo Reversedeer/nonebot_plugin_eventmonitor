@@ -1,40 +1,132 @@
-[tool.poetry]
+[project]
 name = "nonebot-plugin-eventmonitor"
-version = "0.4.2"
-description = "监控群事件的插件，支持戳一戳，成员变动，群荣誉，运气王变化等提示"
-license = "MIT"
-authors = ["Reversedeer"]
+version = "0.4.3"
+description = "监控群事件的插件 For Nonebot2"
+authors = [{ name = "Reversedeer", email = "ysjvillmark@gmail.com" }]
 readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.9,<4.0"
+dependencies = [
+    "nonebot2[fastapi]>=2.2.0",
+    "nonebot-adapter-onebot>=2.2.0",
+    "nonebot-plugin-apscheduler>=0.1.3",
+    "nonebot-plugin-localstore>=0.6.0",
+    "pydantic>=1.10.0,<3.0.0,!=2.5.0,!=2.5.1,!=2.10.0",
+    "pillow>=9.4.0",
+    "httpx[http2]>=0.27.0,<1.0.0",
+]
+[project.urls]
 homepage = "https://github.com/Reversedeer/nonebot_plugin_eventmonitor"
-repository = "https://github.com/Reversedeer/nonebot_plugin_eventmonitor"
-
-[tool.poetry.dependencies]
-python = "^3.9"
-pillow = ">=9.4.0"
-nonebot2 = { version = ">=2.2.0", extras = ["fastapi"] }
-nonebot-adapter-onebot = ">=2.1.3"
-nonebot-plugin-apscheduler = ">=0.1.3"
-pydantic = ">=1.10.0,<3.0.0,!=2.5.0,!=2.5.1,!=2.10.0"
-httpx = { version = ">=0.26.0,<1.0.0", extras = ["http2"], optional = true }
-
-[tool.poetry.extras]
-httpx = ["httpx"]
-fastapi = ["nonebot2"]
-
-[tool.poetry.group.dev.dependencies]
-nonebug = "^0.4.0"
-pytest = "^7.0"
-flake8 = "^6.0"
-
-
-[tool.poetry.group.test.dependencies]
-nonebug = "^0.4.3"
-anyio = "^4.8.0"
-
-[[tool.poetry.source]]
-name = "aliyun"
-url = "http://mirrors.aliyun.com/pypi/simple"
+repository = "https://github.com/Reversedeer/nonebot_plugin_eventmonitor.git"
+Issues = "https://github.com/Reversedeer/nonebot_plugin_eventmonitor/issues"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.nonebot]
+adapters = [
+    { name = "OneBot V11", module_name = "nonebot.adapters.onebot.v11" },
+]
+plugins = ["nonebot_plugin_eventmonitor"]
+
+[tool.poetry.group.dev.dependencies]
+nonebug = ">=0.3.0"
+flake8 = ">=6.0"
+pytest = ">=8.3.2"
+pytest-asyncio = ">=0.23.8"
+pytest-cov = ">=5.0.0"
+pytest-mock = ">=3.14.0"
+ruff = ">=0.6.1"
+black = ">=24.4.2"
+isort = ">=5.13.2"
+mypy = "^1.8.0"
+
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+
+[tool.ruff.format]
+line-ending = "lf"
+quote-style = "single"
+
+[tool.ruff.lint]
+select = [
+    "F",     # pyflakes
+    "E",     # pycodestyle errors
+    "W",     # pycodestyle warnings
+    "C90",   # mccabe
+    "I",     # isort
+    "N",     # PEP8-naming
+    "UP",    # pyupgrade
+    "YTT",   # flake8-2020
+    "ANN",   # flake8-annotations
+    "ASYNC", # flake8-async
+    "S",     # flake8-bandit
+    "BLE",   # flake8-blind-except
+    "FBT",   # flake8-boolean-trap
+    "B",     # flake8-bugbear
+    "A",     # flake8-builtins
+    "COM",   # flake8-commas
+    "C4",    # flake8-comprehensions
+    "DTZ",   # flake8-datetimez
+    "T10",   # flake8-debugger
+    "EM",    # flake8-errmsg
+    "FA",    # flake8-future-annotations
+    "ISC",   # flake8-implicit-str-concat
+    "ICN",   # flake8-import-conventions
+    "PIE",   # flake8-pie
+    "T20",   # flake8-print
+    "PYI",   # flake8-pyi
+    "Q",     # flake8-quotes
+    "RSE",   # flake8-raise
+    "RET",   # flake8-return
+    "SLF",   # flake8-self
+    "SLOT",  # flake8-slots
+    "SIM",   # flake8-simplify
+    "TID",   # flake8-tidy-imports
+    "TCH",   # flake8-type-checking
+    "ARG",   # flake8-unused-arguments
+    "PTH",   # flake8-use-pathlib
+    "ERA",   # eradicate
+    "PD",    # pandas-vet
+    "PGH",   # pygrep-hooks
+    "PL",    # pylint
+    "TRY",   # tryceratops
+    "FLY",   # flynt
+    "FAST",  # FastAPI
+    "PERF",  # Perflint
+    "FURB",  # refurb
+    "RUF",   # Ruff-specific rules
+]
+
+ignore = [
+    "E501",   # line too long
+    "ANN202", # missing type annotation for self in method
+    "TRY003", # try-except-else has no except block
+    "TC003",  # use of assertRaisesRegexp is deprecated
+    "COM812", # trailing comma in function call
+    "TID252", # import from __future__ not at the top of the file
+    "ISC001", # implicit string concatenation
+    "E402",   # module level import not at top of file
+    "B008",   # do not perform function calls in argument defaults
+    "RUF001", # use of assertRaisesRegexp is deprecated
+    "RUF002", # use of assertRaisesRegexp is deprecated
+    "RUF003", # use of assertRaisesRegexp is deprecated
+]
+
+[tool.ruff.lint.flake8-quotes]
+inline-quotes = "single"
+multiline-quotes = "double"
+
+[tool.ruff.lint.flake8-annotations]
+mypy-init-return = true
+
+[tool.ruff.lint.flake8-builtins]
+builtins-ignorelist = ["id"]
+
+[tool.ruff.lint.isort]
+length-sort = true
+force-sort-within-sections = true
+extra-standard-library = ["typing_extensions"]
