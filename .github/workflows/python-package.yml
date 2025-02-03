@@ -51,5 +51,3 @@ jobs:
         uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          slug: Reversedeer/nonebot_plugin_eventmonitor
-          fail_ci_if_error: true
