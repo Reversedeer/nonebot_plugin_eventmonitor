@@ -41,11 +41,11 @@ jobs:
         run: poetry install
 
       - name: Install test tools
-        run: poetry install --group dev
+        run: poetry install --with dev
 
       - name: Run tests
         run: |
-          poetry run pytest --cov-branch --cov-report=xml
+          poetry run pytest --cov-branch --cov-report=xml -v tests/
 
       - name: Upload results to Codecov
         uses: codecov/codecov-action@v5
