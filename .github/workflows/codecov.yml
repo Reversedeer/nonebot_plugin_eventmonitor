@@ -38,7 +38,7 @@ jobs:
       - name: Run Pytest
         run: |
           cd tests
-          poetry run pytest --cov=src --cov-report=xml --junitxml=junit.xml
+          poetry run pytest -n auto --cov-append --cov-report=xml --junitxml=junit.xml
 
       - name: Upload test results
         uses: codecov/test-results-action@v1
