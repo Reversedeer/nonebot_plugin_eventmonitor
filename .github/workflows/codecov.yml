@@ -1,0 +1,60 @@
+name: Code Coverage
+
+on:
+  push:
+    branches: [main, dev]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check-version:
+    name: Test Version
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python-version: ["3.9", "3.10", "3.11", "3.12"]
+    env:
+      OS: ${{ matrix.os }}
+      PYTHON_VERSION: ${{ matrix.python-version }}
+
+    steps:
+      - name: Checkout
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python ${{ matrix.python-version }} environment
+        uses: ./.github/actions/setup-python
+        with:
+          python-version: ${{ matrix.python-version }}
+          no-root: true
+
+      - name: Run Pytest
+        run: |
+          cd tests
+          poetry run pytest -n auto --cov=src --cov-report=xml --junitxml=junit.xml
+
+      - name: Upload test results
+        uses: codecov/test-results-action@v1
+        with:
+          env_vars: OS,PYTHON_VERSION
+          files: ./tests/junit.xml
+          flags: unittests
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+      - name: Upload results to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          env_vars: OS,PYTHON_VERSION
+          files: ./tests/coverage.xml
+          flags: unittests
+          fail_ci_if_error: true
+        env:
+          token: ${{ secrets.CODECOV_TOKEN }}
