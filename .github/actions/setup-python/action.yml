@@ -28,7 +28,7 @@ runs:
       with:
         python-version: ${{ inputs.python-version }}
         cache: "poetry"
-        cache-dependency-path: "~/poetry.lock"
+        cache-dependency-path: ./poetry.lock
 
     - run: |
         if [ "${{ inputs.no-root }}" = "true" ]; then
