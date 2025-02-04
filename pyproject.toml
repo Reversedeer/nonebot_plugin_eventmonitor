@@ -24,6 +24,9 @@ Issues = "https://github.com/Reversedeer/nonebot_plugin_eventmonitor/issues"
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
+[tool.pytest.ini_options]
+addopts = "--cov=nonebot_plugin_eventmonitor --cov-report=xml:./tests/coverage.xml"
+
 [tool.nonebot]
 adapters = [
     { name = "OneBot V11", module_name = "nonebot.adapters.onebot.v11" },
