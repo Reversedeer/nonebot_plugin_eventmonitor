@@ -11,7 +11,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  check-version:
+  test:
     name: Test Version
     runs-on: ${{ matrix.os }}
     strategy:
@@ -25,7 +25,7 @@ jobs:
 
     steps:
       - name: Checkout
-      - uses: actions/checkout@v4
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
