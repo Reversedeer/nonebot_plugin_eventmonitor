@@ -2,6 +2,8 @@ name: Publish to TestPyPI
 
 on:
   push:
+    tags:
+      - "v*"
     branches:
       - dev
 
@@ -16,14 +18,16 @@ jobs:
       - name: Setup Python environment
         uses: ./.github/actions/setup-python
 
-      - name: Configure TestPyPI Repository
-        run: poetry config repositories.testpypi https://test.pypi.org/legacy/
+      - name: Clean build artifacts
+        run: |
+          rm -rf dist/
+          rm -rf *.egg-info/
 
-      - name: Set TestPyPI Token
-        run: poetry config pypi-token.testpypi ${{ secrets.TEST_PYPI_TOKEN }}
-
-      - name: Build Package for TestPyPI
+      - name: Build Package
         run: poetry build
 
-      - name: Publish to TestPyPI
-        run: poetry publish -r testpypi
+      - name: Publish package to TestPyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          password: ${{ secrets.TEST_PYPI_API_TOKEN }}
+          repository-url: https://test.pypi.org/legacy/
