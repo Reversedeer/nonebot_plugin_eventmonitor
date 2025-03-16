@@ -2,16 +2,12 @@ name: Publish to TestPyPI
 
 on:
   workflow_run:
-    workflows: ["Code Coverage"]
     branches: [dev]
-    types:
-      - completed
 
 jobs:
   publish:
     name: Publish Package
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.result == 'success' }}
 
     steps:
       - uses: actions/checkout@v4
