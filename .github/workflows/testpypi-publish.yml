@@ -1,8 +1,9 @@
 name: Publish to TestPyPI
 
 on:
-  workflow_run:
-    branches: [dev]
+  push:
+    branches:
+      - dev
 
 jobs:
   publish:
