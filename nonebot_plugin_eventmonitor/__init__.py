@@ -21,7 +21,7 @@ driver = get_driver()
 
 @scheduler.scheduled_job('cron', hour=8, misfire_grace_time=600)
 async def plugin_update() -> None:
-    await eventmonitor.check_plugin()
+    await eventmonitor.job_plugin_update()
 
 
 @driver.on_bot_connect
