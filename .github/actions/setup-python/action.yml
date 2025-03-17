@@ -35,5 +35,4 @@ runs:
           poetry install --all-extras --no-root
         else
           poetry install --all-extras
-        fi
       shell: bash
