@@ -23,16 +23,3 @@ runs:
       run: |
         pipx install poetry
       shell: bash
-
-    - uses: actions/setup-python@v5
-      with:
-        python-version: ${{ inputs.python-version }}
-        cache: "poetry"
-        cache-dependency-path: ./poetry.lock
-
-    - run: |
-        if [ "${{ inputs.no-root }}" = "true" ]; then
-          poetry install --all-extras --no-root
-        else
-          poetry install --all-extras
-      shell: bash
