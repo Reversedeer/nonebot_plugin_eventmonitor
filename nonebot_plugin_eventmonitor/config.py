@@ -47,20 +47,20 @@ class Utils:
             指令10：开启|关闭文案
             指令11：event指令帮助|eventhelp"""
         self.path = {
-            "chuo": ["戳一戳"],
-            "honor": ["群荣誉检测"],
-            "files": ["群文件检测"],
-            "del_user": ["群成员减少检测"],
-            "add_user": ["群成员增加检测"],
-            "admin": ["管理员变动检测"],
-            "red_package": ["运气王检测"],
+            'chuo': ['戳一戳'],
+            'honor': ['群荣誉检测'],
+            'files': ['群文件检测'],
+            'del_user': ['群成员减少检测'],
+            'add_user': ['群成员增加检测'],
+            'admin': ['管理员变动检测'],
+            'red_package': ['运气王检测'],
         }
         self.g_temp = {}
         self.chuo_CD_dir = {}
-        self.current_version = "v0.4.2"
+        self.current_version = 'v0.4.3'
         self.config_path: Path = store.get_plugin_config_dir()
-        self.data_address: Path = self.config_path / "config.json"
-        self.release_url = "https://api.github.com/repos/Reversedeer/nonebot_plugin_eventmonitor/releases/latest"
+        self.data_address: Path = self.config_path / 'config.json'
+        self.release_url = 'https://api.github.com/repos/Reversedeer/nonebot_plugin_eventmonitor/releases/latest'
 
     async def init(self) -> None:
         """初始化主入口"""
@@ -82,7 +82,7 @@ class Utils:
     async def load_and_validate_config(self) -> None:
         """加载并验证现有配置"""
         try:
-            with self.data_address.open("r", encoding="utf-8") as f:
+            with self.data_address.open('r', encoding='utf-8') as f:
                 loaded_config = json.load(f)
             self.g_temp.update(loaded_config)
         except (json.decoder.JSONDecodeError, FileNotFoundError):
@@ -100,7 +100,7 @@ class Utils:
         default_config = {}
 
         for group in group_list:
-            gid = str(group["group_id"])
+            gid = str(group['group_id'])
             default_config[gid] = self.create_group_template()
 
         return default_config
@@ -110,7 +110,7 @@ class Utils:
         template = {}
         for g_name in self.path:
             template[g_name] = True
-            if g_name in ["red_package"]:
+            if g_name in ['red_package']:
                 template[g_name] = False
         return template
 
@@ -123,7 +123,7 @@ class Utils:
     async def load_current_config(self) -> dict:
         """加载当前配置"""
         try:
-            with self.data_address.open("r", encoding="utf-8") as f:
+            with self.data_address.open('r', encoding='utf-8') as f:
                 return json.load(f)
         except (FileNotFoundError, json.decoder.JSONDecodeError):
             return {}
@@ -134,7 +134,7 @@ class Utils:
         group_list = await bot.get_group_list()
 
         for group in group_list:
-            gid = str(group["group_id"])
+            gid = str(group['group_id'])
             if gid not in config:
                 config[gid] = self.create_group_template()
                 continue
@@ -153,51 +153,51 @@ class Utils:
     @staticmethod
     async def check_chuo(g_temp: dict, gid: str) -> bool:
         """检查戳一戳是否允许"""
-        if gid in g_temp and not g_temp[gid]["chuo"]:
+        if gid in g_temp and not g_temp[gid]['chuo']:
             return False
-        return g_temp[gid]["chuo"]
+        return g_temp[gid]['chuo']
 
     @staticmethod
     async def check_honor(g_temp: dict, gid: str) -> bool:
         """检查群荣誉是否允许"""
-        if gid in g_temp and not g_temp[gid]["honor"]:
+        if gid in g_temp and not g_temp[gid]['honor']:
             return False
-        return g_temp[gid]["honor"]
+        return g_temp[gid]['honor']
 
     @staticmethod
     async def check_file(g_temp: dict, gid: str) -> bool:
         """检查群文件是否允许"""
-        if gid in g_temp and not g_temp[gid]["files"]:
+        if gid in g_temp and not g_temp[gid]['files']:
             return False
-        return g_temp[gid]["files"]
+        return g_temp[gid]['files']
 
     @staticmethod
     async def check_del_user(g_temp: dict, gid: str) -> bool:
         """检查群成员减少是否允许"""
-        if gid in g_temp and not g_temp[gid]["del_user"]:
+        if gid in g_temp and not g_temp[gid]['del_user']:
             return False
-        return g_temp[gid]["del_user"]
+        return g_temp[gid]['del_user']
 
     @staticmethod
     async def check_add_user(g_temp: dict, gid: str) -> bool:
         """检查群成员增加是否允许"""
-        if gid in g_temp and not g_temp[gid]["add_user"]:
+        if gid in g_temp and not g_temp[gid]['add_user']:
             return False
-        return g_temp[gid]["add_user"]
+        return g_temp[gid]['add_user']
 
     @staticmethod
     async def check_admin(g_temp: dict, gid: str) -> bool:
         """检查管理员是否允许"""
-        if gid in g_temp and not g_temp[gid]["admin"]:
+        if gid in g_temp and not g_temp[gid]['admin']:
             return False
-        return g_temp[gid]["admin"]
+        return g_temp[gid]['admin']
 
     @staticmethod
     async def check_red_package(g_temp: dict, gid: str) -> bool:
         """检查运气王是否允许"""
-        if gid in g_temp and not g_temp[gid]["red_package"]:
+        if gid in g_temp and not g_temp[gid]['red_package']:
             return False
-        return g_temp[gid]["red_package"]
+        return g_temp[gid]['red_package']
 
     @staticmethod
     async def check_txt_to_img(enable_check: bool) -> bool:  # noqa: FBT001
@@ -213,22 +213,18 @@ class Utils:
     def get_command_type(self, command: str) -> str:
         """根据指令内容获取开关类型"""
         return next(
-            (
-                key
-                for key, keywords in self.path.items()
-                if any(keyword in command for keyword in keywords)
-            ),
-            "",
+            (key for key, keywords in self.path.items() if any(keyword in command for keyword in keywords)),
+            '',
         )
 
     async def write_group_data(self, g_temp: dict) -> None:
         """写入群配置"""
-        with self.data_address.open("w", encoding="utf-8") as f:
+        with self.data_address.open('w', encoding='utf-8') as f:
             json.dump(g_temp, f, ensure_ascii=False, indent=4)
 
     async def json_upload(self, updated_config: dict) -> None:
         """将 JSON 数据上传到指定路径"""
-        with self.data_address.open("w", encoding="utf-8") as f:
+        with self.data_address.open('w', encoding='utf-8') as f:
             json.dump(updated_config, f, ensure_ascii=False, indent=4)
 
     @staticmethod

@@ -86,11 +86,15 @@ class Eventmonitor:
         self,
         matcher: Matcher,
         event: GroupDecreaseNoticeEvent,
+        bot: Bot,
     ) -> None:
         """退群事件"""
         if not (await utils.check_del_user(utils.g_temp, str(event.group_id))):
             return
-        rely_msg: str | Message = await message.del_user_bye(event.time, event.user_id)
+        user_id: int = event.user_id
+        member_info: dict = await bot.get_stranger_info(user_id=user_id)
+        nickname: str = member_info.get('nickname', '未知昵称')
+        rely_msg: str | Message = await message.del_user_bye(event.time, event.user_id, nickname)
         if await utils.check_txt_to_img(config_data.event_check_txt_img):
             await matcher.send(MessageSegment.image(await txt_to_img.txt_to_img(str(rely_msg))), at_sender=True)
         else:
@@ -107,7 +111,11 @@ class Eventmonitor:
         if not (await utils.check_add_user(utils.g_temp, str(event.group_id))):
             return
         bot_qq = int(bot.self_id)
-        rely_msg = await message.add_user_wecome(event.time, event.user_id, bot_qq)
+        user_id: int = event.user_id
+        group_id: int = event.group_id
+        member_info: dict = await bot.get_group_member_info(group_id=group_id, user_id=user_id)
+        nickname: str = member_info.get('nickname', '未知昵称')
+        rely_msg = await message.add_user_wecome(event.time, user_id, bot_qq, nickname)
         if await utils.check_txt_to_img(config_data.event_check_txt_img):
             await matcher.send(MessageSegment.image(await txt_to_img.txt_to_img(str(rely_msg))), at_sender=True)
         else:
@@ -249,6 +257,34 @@ class Eventmonitor:
             )
         else:
             await bot.send_private_msg(user_id=int(next(iter(bot.config.superusers))), message=Message(rely_msg))
+        return True
+
+    async def job_plugin_update(self) -> bool:
+        """检查更新核心逻辑"""
+        if not config_data.event_check_plugin_update:
+            return False
+        try:
+            data: dict | None = await self.get_latest_version_data()
+            if not data or 'tag_name' not in data:
+                logger.error('获取版本数据无效')
+                return False
+        except (HTTPStatusError, ConnectError, RequestError, TimeoutError, json.JSONDecodeError) as e:
+            logger.error(f'获取最新版本数据失败: {e}')
+            raise
+        current = str(version.parse(utils.current_version.lstrip('v')))
+        latest = str(version.parse(data['tag_name'].lstrip('v')))
+        if current == latest:
+            pass
+        else:
+            rely_msg: str = await message.job_update_msg(current, latest, data)
+            bot = get_bot()
+            if await utils.check_txt_to_img(config_data.event_check_txt_img):
+                await bot.send_private_msg(
+                    user_id=int(next(iter(bot.config.superusers))),
+                    message=MessageSegment.image(await txt_to_img.txt_to_img(rely_msg)),
+                )
+            else:
+                await bot.send_private_msg(user_id=int(next(iter(bot.config.superusers))), message=Message(rely_msg))
         return True
 
 

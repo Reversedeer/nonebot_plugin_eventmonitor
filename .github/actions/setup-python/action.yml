@@ -6,31 +6,20 @@ inputs:
     description: Python version
     required: false
     default: "3.10"
+  no-root:
+    description: Do not install package in the environment
+    required: false
+    default: "false"
 
 runs:
   using: "composite"
   steps:
     - name: Install pipx
-      run: python -m pip install --user pipx
+      run: |
+        python -m pip install --user pipx
       shell: bash
 
     - name: Install poetry
       run: |
         pipx install poetry
-        poetry config virtualenvs.in-project true
-      shell: bash
-
-    - uses: actions/setup-python@v5
-      with:
-        python-version: ${{ inputs.python-version }}
-
-    - name: Cache Poetry
-      uses: actions/cache@v3
-      with:
-        path: |
-          ~/.cache/pypoetry
-          .venv
-        key: poetry-${{ hashFiles('poetry.lock') }}
-
-    - run: poetry install
       shell: bash

@@ -28,7 +28,7 @@ class Matcher:
 
         return admin_msg
 
-    async def del_user_bye(self, del_time: int, user_id: int) -> str | Message:
+    async def del_user_bye(self, del_time: int, user_id: int, nickname: str) -> str | Message:
         """发送退群消息"""
         del_datatime = datetime.fromtimestamp(del_time, tz=timezone.utc)
         # 检查用户ID是否在超级用户列表superusers中
@@ -37,14 +37,15 @@ class Matcher:
             rely = f'⌈{del_datatime}⌋\n恭送主人离开喵~'
         else:
             # 如果不是超级用户，生成通用的离开消息，包含用户的QQ号和头像图片
-            rely = f'✈️ 成员变动 ✈️ \n时间: ⌈{del_datatime}⌋\nQQ号为: {user_id}的小可爱退群喵~' + MessageSegment.image(
-                f'https://q4.qlogo.cn/headimg_dl?dst_uin={user_id}&spec=640'
+            rely = (
+                f'✈️ 成员变动 ✈️ \n名为：{nickname}的小可爱退群喵~\nQQ号为: {user_id}\n退群时间：⌈{del_datatime}⌋\n我们会永远记得TA'
+                + MessageSegment.image(f'https://q4.qlogo.cn/headimg_dl?dst_uin={user_id}&spec=640')
             )
 
         return rely
 
     async def add_user_wecome(
-        self, add_time: int, user_id: int, bot_qq: int
+        self, add_time: int, user_id: int, bot_qq: int, nickname: str
     ) -> Literal['本喵被邀进入贵群喵~\n火速上个管理喵~', '✨ 成员变动 ✨\n欢迎主人进群喵~'] | Message:
         """发送入群消息"""
         # 将时间戳转换为datetime类型的时间add_time
@@ -60,7 +61,7 @@ class Matcher:
         else:
             # 如果是普通用户加入群组，生成通用的欢迎消息，包含用户ID、加入时间和用户头像图片的链接
             rely = (
-                f'✨ 成员变动 ✨\n欢迎{user_id}的加入喵~\n加入时间：⌈{add_datetime}⌋，请在群内积极发言喵~'
+                f'✨ 成员变动 ✨\n欢迎成员：{nickname}的加入喵~\nQQ号为:{user_id}\n加入时间：⌈{add_datetime}⌋\n请在群内积极发言喵~'
                 + MessageSegment.image(f'https://q4.qlogo.cn/headimg_dl?dst_uin={user_id}&spec=640')
             )
         return rely
@@ -129,8 +130,26 @@ class Matcher:
 
     async def update_msg(self, current: str, latest: str, data: dict) -> str:
         if current == latest:
-            message: str = f'插件已是最新版本:{utils.current_version}'
+            message: str = f'eventmonitor插件已是最新版本:{utils.current_version}'
         elif current < latest:
+            message_template: str = (
+                '✨检测到插件更新✨\n'
+                '插件名称：nonebot-plugin-eventmonitor\n'
+                f'更新日期：{data["published_at"]}\n'
+                f'版本变化：{utils.current_version} -> {data["tag_name"]}\n'
+                f'更新日志：\n{data["body"]}'
+            )
+            message: str = message_template
+        else:
+            message: str = (
+                '🚨检测插件更新时发现错误🚨\n'
+                f'版本变化：{utils.current_version} -> {data["tag_name"]}\n'
+                '请检查更新日志并核查本地版本号'
+            )
+        return message
+
+    async def job_update_msg(self, current: str, latest: str, data: dict) -> str:
+        if current < latest:
             message_template: str = (
                 '✨检测到插件更新✨\n'
                 '插件名称：nonebot-plugin-eventmonitor\n'
