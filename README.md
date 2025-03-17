@@ -6,10 +6,9 @@
 
 # nonebot-plugin-eventmonitor
 
-_✨ 基于 NoneBot2 实现的 监测 QQ 群事件，群荣誉事件的插件✨_
+_✨ 基于 NoneBot2 实现的 监测 QQ 群事件，群荣誉事件的插件 ✨_
 
 </div>
-
 
 <p align="center">
   <a href="https://raw.githubusercontent.com/Reversedeer/nonebot_plugin_eventmonitor/main/LICENSE">
@@ -24,10 +23,7 @@ _✨ 基于 NoneBot2 实现的 监测 QQ 群事件，群荣誉事件的插件✨
   </a>
 </p>
 
-
-
 ## 介绍:
-
 
 > 监测群组的以下变动事件：
 >
@@ -53,7 +49,7 @@ _✨ 基于 NoneBot2 实现的 监测 QQ 群事件，群荣誉事件的插件✨
 
 > [!TIP]
 >
-> 本插件从v0.4.0开始使用localstore管理插件数据，若需要使用旧配置，请使用~~迁移脚本~~迁移config.json
+> 本插件从 v0.4.0 开始使用 localstore 管理插件数据，若需要使用旧配置，请使用~~迁移脚本~~迁移 config.json
 >
 > 若想全新开始，插件已初始化并配置好默认值，请使用指令按需修改
 
@@ -65,8 +61,6 @@ _✨ 基于 NoneBot2 实现的 监测 QQ 群事件，群荣誉事件的插件✨
 >
 > 目标位置请移步[数据存储](https://nonebot.dev/docs/next/best-practice/data-storing)
 
-
-
 ## 安装方式
 
 ### nb-cli
@@ -77,7 +71,6 @@ nb plugin install nonebot-plugin-eventmonitor
 
 <details>
     <summary><h2>pip</h2></summary>
-
 
 ```python
 pip install nonebot-plugin-eventmonitor
@@ -97,14 +90,13 @@ pip install --upgrade nonebot-plugin-eventmonitor
 
 ## 配置(必填)
 
-
-|          config           |   type   | default  |             example              |                             usag                             |
-| :-----------------------: | :------: | :------: | :------------------------------: | :----------------------------------------------------------: |
+|          config           |   type   | default  |             example              |                                                usag                                                 |
+| :-----------------------: | :------: | :------: | :------------------------------: | :-------------------------------------------------------------------------------------------------: |
 |        SUPERUSERS         | set[str] |  set()   |      SUPERUSERS=["114514"]       | 机器人超级用户，可以使用权限 [`SUPERUSER`](https://nonebot.dev/docs/2.0.0/api/permission#SUPERUSER) |
-|         NICKNAME          | set[str] | set(Bot) |        NICKNAME=["IKun"]         |                          机器人昵称                          |
-| event_check_plugin_update |   bool   |   True   | event_check_plugin_update = True |                     是否启用插件检测更新                     |
-|    event_check_txt_img    |   bool   |  False   |    event_check_txt_img= false    |                      是否启用文字转图片                      |
-|       event_chuo_cd       |   int    |    10    |        event_chuo_cd= 10         |                         戳一戳的 cd                          |
+|         NICKNAME          | set[str] | set(Bot) |        NICKNAME=["IKun"]         |                                             机器人昵称                                              |
+| event_check_plugin_update |   bool   |   True   | event_check_plugin_update = True |                                        是否启用插件检测更新                                         |
+|    event_check_txt_img    |   bool   |  False   |    event_check_txt_img= false    |                                         是否启用文字转图片                                          |
+|       event_chuo_cd       |   int    |    10    |        event_chuo_cd= 10         |                                             戳一戳的 cd                                             |
 
 ## 指令帮助
 
@@ -134,7 +126,7 @@ Bot: "
 	管理员变动检测: 开启
 	运气王检测: 关闭
 	"
-	
+
 SUPERUSER/GROUP_ADMIN/GROUP_OWNER: "/eventhelp"
 Bot: "
 	指令1：戳一戳(戳一戳bot获取文案)
@@ -189,40 +181,49 @@ json结构(默认值):
 - v0.4.3
 
   - ✨ 优化入退群消息
-  
-  - ✨ 优化了烦人的每天插件更新播报（仅在每次启动bot时自动发送）
-  
+
+  - ✨ 优化了烦人的每天插件更新播报（仅在每次启动 bot 时自动发送）
+
 - v0.4.2
-  - 🐛 修复nickname未格式化
+
+  - 🐛 修复 nickname 未格式化
 
 - v0.4.1
+
+  - 🐛 修复配置文件读取错误
+  - 🐛 修复版本号读取错误
+
   - 🐛 修复配置文件读取错误
   - 🐛 修复版本号读取错误
 
 - v0.4.0
-  - ✨ 使用Localstore管理插件数据
+
+  - ✨ 使用 Localstore 管理插件数据
 
   - ✨ 重构代码，增加可读性便于维护
 
   - 💥 弃用插件指令自动更新（仅可手动更新）
+
 - v0.3.2
   - ✨ 新增插件定时任务
   - ✨ 新增消息文字转图片
 - v0.3.1
+
   - ♻ 重构项目
   - ✨ 新增插件自动更新
   - 🐛 修复红包运气王无法检测 bug
   - 🐛 修复自动更新时意外报错 bug
+
 - v0.2.1
 
   - ✨ 适配插件元数据
-
   - 🐛 修复 bug
+
 - v0.2.0
 
   - 🐛 修复 bot 加群 bug[issue6](https://github.com/Reversedeer/nonebot_plugin_eventmonitor/issues/18)
-
   - ♻️ 优化提示
+
 - v0.1.9
   - ✨ 新增功能开关指令：event 状态/event 配置
   - 🐛 修复群文件不能检测 bug(少写一个字母 qwq)
@@ -230,30 +231,40 @@ json结构(默认值):
 - v0.1.7
 
   - ✨ 新增所有功能开关[#issue5](https://github.com/Reversedeer/nonebot_plugin_eventmonitor/issues/9)
-
   - ✨ 新增权限控制
   - 🐛 修复潜在的 bug
+
 - v0.1.6
+
   - 🐛 修复 bug
+
 - v0.1.5
+
   - 🐛 修复获取 superusers 数值 bug
   - ♻️ 优化配置文件 [#issue4](https://github.com/Reversedeer/nonebot_plugin_eventmonitor/issues/6)
   - 💥 删除冗余代码
+
 - v0.1.3
+
   - 🐛 修复配置文件 bug
+
 - v0.1.2
 
   - ✨ 增加戳一戳的文案
-
   - 🐛 修复 bug
+
 - v0.1.1
 
   - 🐛 修复 bug
+
 - v0.1.0
+
   - ✨ 新增戳一戳加了 cd（本人觉得功能鸡肋）
   - 🐛 修复管理员变动时 API 报错问题[#issue1](https://github.com/Reversedeer/nonebot_plugin_eventmonitor/issues/1)
   - ♻️ 优化原有的配置模式
+
 - v0.0.6
+
   - 🐛 修复了大量的 bug
   </details>
 
@@ -279,4 +290,4 @@ json结构(默认值):
 
 [nonebot-plugin-dog(获取舔狗文案，汪！)](https://github.com/Reversedeer/nonebot_plugin_dog)
 
-[nonebot-plugin-hyp(查询hypixel玩家数据)](https://github.com/Reversedeer/nonebot_plugin_hyp)
+[nonebot-plugin-hyp(查询 hypixel 玩家数据)](https://github.com/Reversedeer/nonebot_plugin_hyp)
