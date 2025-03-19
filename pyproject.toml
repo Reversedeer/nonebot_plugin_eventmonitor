@@ -1,6 +1,6 @@
 [project]
 name = "nonebot-plugin-eventmonitor"
-version = "0.4.3"
+version = "0.4.4"
 description = "监控群事件的插件 For Nonebot2"
 authors = [{ name = "Reversedeer", email = "ysjvillmark@gmail.com" }]
 readme = "README.md"
@@ -14,6 +14,7 @@ dependencies = [
     "pydantic>=1.10.0,<3.0.0,!=2.5.0,!=2.5.1,!=2.10.0",
     "pillow>=9.4.0",
     "httpx[http2]>=0.27.0,<1.0.0",
+    "packaging>=24.2",
 ]
 [project.urls]
 homepage = "https://github.com/Reversedeer/nonebot_plugin_eventmonitor"
