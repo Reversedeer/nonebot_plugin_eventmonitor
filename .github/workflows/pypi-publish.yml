@@ -1,4 +1,4 @@
-name: Publish
+name: Release
 
 on:
   push:
@@ -24,31 +24,26 @@ jobs:
       - name: Setup Python environment
         uses: ./.github/actions/setup-python
 
-      - name: Install pypa/build
-        run: >-
-          python -m
-          pip install
-          build
-          --user
-
-      - name: Build package
+      - name: Clean build artifacts
         run: |
-          python -m build --sdist --wheel --outdir dist/ .
-          echo "Build artifacts:" && ls -lh dist/
+          rm -rf dist/
+          rm -rf *.egg-info/
+
+      - name: Build Package
+        run: poetry build
 
       - name: Create Github Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.ref_name }}
           name: Release ${{ github.ref_name }}
           generate_release_notes: true
-
           files: |
             dist/*.whl
             dist/*.tar.gz
           draft: false
           prerelease: false
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.TOKEN }}
 
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1

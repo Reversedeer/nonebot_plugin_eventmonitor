@@ -1,4 +1,4 @@
-name: Ruff Lint
+name: Ruff
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 
 jobs:
   ruff:
-    name: Ruff Lint
+    name: Ruff
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
