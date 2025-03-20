@@ -9,12 +9,11 @@ from nonebot.adapters.onebot.v11.permission import (
     GROUP_OWNER,
 )
 
-from .config import Config, utils
-from .handle import eventmonitor
-
 require('nonebot_plugin_localstore')
 require('nonebot_plugin_apscheduler')
 
+from .config import Config, utils
+from .handle import eventmonitor
 
 driver = get_driver()
 
