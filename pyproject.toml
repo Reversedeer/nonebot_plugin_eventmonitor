@@ -14,6 +14,7 @@ dependencies = [
     "pydantic>=1.10.0,<3.0.0,!=2.5.0,!=2.5.1,!=2.10.0",
     "pillow>=9.4.0",
     "httpx[http2]>=0.27.0,<1.0.0",
+    "packaging>=24.2",
 ]
 [project.urls]
 homepage = "https://github.com/Reversedeer/nonebot_plugin_eventmonitor"
