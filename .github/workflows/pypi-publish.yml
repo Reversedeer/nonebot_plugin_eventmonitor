@@ -29,22 +29,24 @@ jobs:
           rm -rf dist/
           rm -rf *.egg-info/
 
+      - name: Get Version
+        id: version
+        run: |
+          echo "VERSION=$(poetry version -s)" >> $GITHUB_OUTPUT
+          echo "TAG_VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+          echo "TAG_NAME=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+
+      - name: Check Version
+        if: steps.version.outputs.VERSION != steps.version.outputs.TAG_VERSION
+        run: exit 1
+
       - name: Build Package
         run: poetry build
 
-      - name: Create Github Release
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: ${{ github.ref_name }}
-          name: Release ${{ github.ref_name }}
-          generate_release_notes: true
-
-          files: |
-            dist/*.whl
-            dist/*.tar.gz
-          draft: false
-          prerelease: false
-          token: ${{ secrets.TOKEN }}
+      - name: Upload Release Asset
+        run: gh release upload --clobber ${{ steps.version.outputs.TAG_NAME }} dist/*.tar.gz dist/*.whl
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1

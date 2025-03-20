@@ -2,7 +2,8 @@ name: Ruff
 
 on:
   push:
-    branches: [main, dev]
+    branches:
+      - main
   pull_request:
   workflow_dispatch:
 
