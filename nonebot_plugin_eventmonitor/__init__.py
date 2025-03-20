@@ -9,12 +9,11 @@ from nonebot.adapters.onebot.v11.permission import (
     GROUP_OWNER,
 )
 
-from .config import Config, utils
-from .handle import eventmonitor
-
 require('nonebot_plugin_localstore')
 require('nonebot_plugin_apscheduler')
 
+from .config import Config, utils
+from .handle import eventmonitor
 
 driver = get_driver()
 
@@ -126,7 +125,7 @@ __plugin_meta__ = PluginMetadata(
     supported_adapters={'~onebot.v11'},
     extra={
         'author': 'Reversedeer',
-        'version': '0.4.5',
+        'version': '0.4.6',
         'priority': 50,
         'email': 'ysjvillmark@gmail.com',
     },
