@@ -57,7 +57,7 @@ class Utils:
         }
         self.g_temp = {}
         self.chuo_CD_dir = {}
-        self.current_version = 'v0.4.5'
+        self.current_version = 'v0.4.6'
         self.config_path: Path = store.get_plugin_config_dir()
         self.data_address: Path = self.config_path / 'config.json'
         self.release_url = 'https://api.github.com/repos/Reversedeer/nonebot_plugin_eventmonitor/releases/latest'
