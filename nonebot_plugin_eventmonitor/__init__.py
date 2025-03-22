@@ -3,7 +3,6 @@
 from nonebot import require, get_driver
 from nonebot.plugin import PluginMetadata, on_notice, on_command
 from nonebot.permission import SUPERUSER
-from nonebot_plugin_apscheduler import scheduler
 from nonebot.adapters.onebot.v11.permission import (
     GROUP_ADMIN,
     GROUP_OWNER,
@@ -11,6 +10,7 @@ from nonebot.adapters.onebot.v11.permission import (
 
 require('nonebot_plugin_localstore')
 require('nonebot_plugin_apscheduler')
+from nonebot_plugin_apscheduler import scheduler
 
 from .config import Config, utils
 from .handle import eventmonitor
@@ -125,7 +125,7 @@ __plugin_meta__ = PluginMetadata(
     supported_adapters={'~onebot.v11'},
     extra={
         'author': 'Reversedeer',
-        'version': '0.4.6',
+        'version': '0.4.7',
         'priority': 50,
         'email': 'ysjvillmark@gmail.com',
     },
