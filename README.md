@@ -181,20 +181,20 @@ json结构(默认值):
 - v0.4.8
 
   - ✨ 使用UTC-8显示时间
+- v0.4.6
+
+  - 🐛 修复依赖顺序加载错误
 
 - v0.4.5
   - 🐛 修复依赖缺失的错误
-
 - v0.4.3
 
   - ✨ 优化入退群消息
 
   - ✨ 优化了烦人的每天插件更新播报（仅在每次启动 bot 时自动发送）
-
 - v0.4.2
 
   - 🐛 修复 nickname 未格式化
-
 - v0.4.1
 
   - 🐛 修复配置文件读取错误
@@ -202,7 +202,6 @@ json结构(默认值):
 
   - 🐛 修复配置文件读取错误
   - 🐛 修复版本号读取错误
-
 - v0.4.0
 
   - ✨ 使用 Localstore 管理插件数据
@@ -210,7 +209,6 @@ json结构(默认值):
   - ✨ 重构代码，增加可读性便于维护
 
   - 💥 弃用插件指令自动更新（仅可手动更新）
-
 - v0.3.2
   - ✨ 新增插件定时任务
   - ✨ 新增消息文字转图片
@@ -220,17 +218,14 @@ json结构(默认值):
   - ✨ 新增插件自动更新
   - 🐛 修复红包运气王无法检测 bug
   - 🐛 修复自动更新时意外报错 bug
-
 - v0.2.1
 
   - ✨ 适配插件元数据
   - 🐛 修复 bug
-
 - v0.2.0
 
   - 🐛 修复 bot 加群 bug[issue6](https://github.com/Reversedeer/nonebot_plugin_eventmonitor/issues/18)
   - ♻️ 优化提示
-
 - v0.1.9
   - ✨ 新增功能开关指令：event 状态/event 配置
   - 🐛 修复群文件不能检测 bug(少写一个字母 qwq)
@@ -240,36 +235,29 @@ json结构(默认值):
   - ✨ 新增所有功能开关[#issue5](https://github.com/Reversedeer/nonebot_plugin_eventmonitor/issues/9)
   - ✨ 新增权限控制
   - 🐛 修复潜在的 bug
-
 - v0.1.6
 
   - 🐛 修复 bug
-
 - v0.1.5
 
   - 🐛 修复获取 superusers 数值 bug
   - ♻️ 优化配置文件 [#issue4](https://github.com/Reversedeer/nonebot_plugin_eventmonitor/issues/6)
   - 💥 删除冗余代码
-
 - v0.1.3
 
   - 🐛 修复配置文件 bug
-
 - v0.1.2
 
   - ✨ 增加戳一戳的文案
   - 🐛 修复 bug
-
 - v0.1.1
 
   - 🐛 修复 bug
-
 - v0.1.0
 
   - ✨ 新增戳一戳加了 cd（本人觉得功能鸡肋）
   - 🐛 修复管理员变动时 API 报错问题[#issue1](https://github.com/Reversedeer/nonebot_plugin_eventmonitor/issues/1)
   - ♻️ 优化原有的配置模式
-
 - v0.0.6
 
   - 🐛 修复了大量的 bug
