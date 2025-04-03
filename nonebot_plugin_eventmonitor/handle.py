@@ -1,7 +1,6 @@
 """事件处理"""
 
 import json
-from typing import NoReturn
 import asyncio
 
 from httpx import AsyncClient, ConnectError, RequestError, HTTPStatusError
@@ -181,7 +180,7 @@ class Eventmonitor:
             else:
                 await matcher.finish(f'{name}功能已关闭喵')
 
-    async def usage(self, matcher: Matcher) -> NoReturn:
+    async def usage(self, matcher: Matcher) -> None:
         """获取指令帮助"""
         if await utils.check_txt_to_img(config_data.event_check_txt_img):
             await matcher.send(MessageSegment.image(await txt_to_img.txt_to_img(utils.usage)))
