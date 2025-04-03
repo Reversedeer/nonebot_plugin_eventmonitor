@@ -2,7 +2,7 @@
 
 from typing import Literal
 import secrets
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 
 from nonebot.adapters.onebot.v11 import MessageSegment
 from nonebot.adapters.onebot.v11.message import Message
@@ -30,7 +30,7 @@ class Matcher:
 
     async def del_user_bye(self, del_time: int, user_id: int, nickname: str) -> str | Message:
         """发送退群消息"""
-        del_datatime = datetime.fromtimestamp(del_time, tz=timezone.utc)
+        del_datatime = datetime.fromtimestamp(del_time, tz=timezone(timedelta(hours=8)))
         # 检查用户ID是否在超级用户列表superusers中
         if user_id in config_data.superusers:
             # 如果是超级用户，生成特定的离开消息
@@ -49,7 +49,7 @@ class Matcher:
     ) -> Literal['本喵被邀进入贵群喵~\n火速上个管理喵~', '✨ 成员变动 ✨\n欢迎主人进群喵~'] | Message:
         """发送入群消息"""
         # 将时间戳转换为datetime类型的时间add_time
-        add_datetime = datetime.fromtimestamp(add_time, tz=timezone.utc)
+        add_datetime = datetime.fromtimestamp(add_time, tz=timezone(timedelta(hours=8)))
         # 判断用户ID是否等于机器人的QQ号
         if user_id == bot_qq:
             # 如果是机器人自己加入群组，生成特定的欢迎消息
