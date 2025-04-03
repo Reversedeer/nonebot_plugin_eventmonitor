@@ -125,7 +125,7 @@ __plugin_meta__ = PluginMetadata(
     supported_adapters={'~onebot.v11'},
     extra={
         'author': 'Reversedeer',
-        'version': '0.4.7',
+        'version': '0.4.8',
         'priority': 50,
         'email': 'ysjvillmark@gmail.com',
     },
