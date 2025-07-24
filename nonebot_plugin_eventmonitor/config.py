@@ -226,6 +226,7 @@ class Utils:
         """将 JSON 数据上传到指定路径"""
         with self.data_address.open('w', encoding='utf-8') as f:
             json.dump(updated_config, f, ensure_ascii=False, indent=4)
+        self.g_temp = updated_config
 
     @staticmethod
     async def poke(event: Event) -> bool:
