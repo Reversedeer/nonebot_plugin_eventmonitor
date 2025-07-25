@@ -86,10 +86,18 @@ class Eventmonitor:
         matcher: Matcher,
         event: GroupDecreaseNoticeEvent,
         bot: Bot,
-    ) -> None:
+    ) -> bool:
         """退群事件"""
+        gid = str(event.group_id)
+        # 检查 bot 是否还在群，不在则删除配置
+        group_list = await bot.get_group_list()
+        group_ids = {str(g['group_id']) for g in group_list}
+        if gid not in group_ids:
+            await utils.remove_group_config(gid)
+            return False
+
         if not (await utils.check_del_user(utils.g_temp, str(event.group_id))):
-            return
+            return False
         user_id: int = event.user_id
         member_info: dict = await bot.get_stranger_info(user_id=user_id)
         nickname: str = member_info.get('nickname', '未知昵称')
@@ -98,17 +106,18 @@ class Eventmonitor:
             await matcher.send(MessageSegment.image(await txt_to_img.txt_to_img(str(rely_msg))), at_sender=True)
         else:
             await matcher.finish(rely_msg)
+        return True
 
     async def add_user(
         self,
         matcher: Matcher,
         event: GroupIncreaseNoticeEvent,
         bot: Bot,
-    ) -> None:
+    ) -> bool:
         """入群事件"""
         await utils.config_check()
         if not (await utils.check_add_user(utils.g_temp, str(event.group_id))):
-            return
+            return False
         bot_qq = int(bot.self_id)
         user_id: int = event.user_id
         group_id: int = event.group_id
@@ -119,59 +128,96 @@ class Eventmonitor:
             await matcher.send(MessageSegment.image(await txt_to_img.txt_to_img(str(rely_msg))), at_sender=True)
         else:
             await matcher.finish(rely_msg)
+        return True
 
     async def admin_chance(
         self,
         matcher: Matcher,
         event: GroupAdminNoticeEvent,
         bot: Bot,
-    ) -> None:
+    ) -> bool:
         """管理员变动事件"""
         if not (await utils.check_admin(utils.g_temp, str(event.group_id))):
-            return
+            return False
         bot_qq = int(bot.self_id)
         rely_msg: str = await message.admin_changer(event.sub_type, event.user_id, bot_qq)
         if await utils.check_txt_to_img(config_data.event_check_txt_img):
             await matcher.send(MessageSegment.image(await txt_to_img.txt_to_img(rely_msg)), at_sender=True)
         else:
             await matcher.finish(rely_msg)
+        return True
 
     async def hongbao(
         self,
         matcher: Matcher,
         event: LuckyKingNotifyEvent,
         bot: Bot,
-    ) -> None:
+    ) -> bool:
         """红包运气王事件"""
         if not (await utils.check_red_package(utils.g_temp, str(event.group_id))):
-            return
+            return False
         bot_qq = int(bot.self_id)
         rely_msg = await message.rad_package_change(event.target_id, bot_qq)
         if await utils.check_txt_to_img(config_data.event_check_txt_img):
             await matcher.send(MessageSegment.image(await txt_to_img.txt_to_img(rely_msg)), at_sender=True)
         else:
             await matcher.finish(rely_msg)
+        return True
 
     async def switch(
         self,
         matcher: Matcher,
         event: GroupMessageEvent,
-    ) -> None:
+    ) -> bool:
         """获取开关指令的参数，即用户输入的指令内容"""
         command = str(event.get_message()).strip()
-        # 获取群组ID
         gid = str(event.group_id)
-        # 判断指令是否包含"开启"或"关闭"关键字
+        if 'event全部功能' in command or '全部event功能' in command:
+            await self._handle_all_switch(command, gid, matcher)
+        else:
+            await self._handle_single_switch(command, gid, matcher)
+        return False
+
+    async def _handle_all_switch(
+        self,
+        command: str,
+        gid: str,
+        matcher: Matcher,
+    ) -> bool:
+        """处理一键开启/关闭所有功能"""
         if '开启' in command or '开始' in command:
-            if key := utils.get_command_type(command):
+            for key in utils.path:
                 utils.g_temp[gid][key] = True
-                await utils.write_group_data(utils.g_temp)
-                name = utils.get_function_name(key)
-                if not (await utils.check_txt_to_img(config_data.event_check_txt_img)):
-                    await matcher.finish(f'{name}功能已开启喵')
-                else:
-                    await matcher.send(MessageSegment.image(await txt_to_img.txt_to_img(f'{name}功能已开启喵')))
-        elif ('禁止' in command or '关闭' in command) and (key := utils.get_command_type(command)):
+            await utils.write_group_data(utils.g_temp)
+            msg = '所有功能已一键开启喵'
+            await self._send_switch_msg(msg, matcher)
+            return True
+        if '禁止' in command or '关闭' in command:
+            for key in utils.path:
+                utils.g_temp[gid][key] = False
+            await utils.write_group_data(utils.g_temp)
+            msg = '所有功能已一键关闭喵'
+            await self._send_switch_msg(msg, matcher)
+            return True
+        return False
+
+    async def _handle_single_switch(
+        self,
+        command: str,
+        gid: str,
+        matcher: Matcher,
+    ) -> bool:
+        """处理单项功能开关"""
+        if ('开启' in command or '开始' in command) and (key := utils.get_command_type(command)):
+            utils.g_temp[gid][key] = True
+            await utils.write_group_data(utils.g_temp)
+            name = utils.get_function_name(key)
+            if not (await utils.check_txt_to_img(config_data.event_check_txt_img)):
+                await matcher.finish(f'{name}功能已开启喵')
+            else:
+                await matcher.send(MessageSegment.image(await txt_to_img.txt_to_img(f'{name}功能已开启喵')))
+            return True
+        if ('禁止' in command or '关闭' in command) and (key := utils.get_command_type(command)):
             utils.g_temp[gid][key] = False
             await utils.write_group_data(utils.g_temp)
             name = utils.get_function_name(key)
@@ -179,6 +225,15 @@ class Eventmonitor:
                 await matcher.send(MessageSegment.image(await txt_to_img.txt_to_img(f'{name}功能已关闭喵')))
             else:
                 await matcher.finish(f'{name}功能已关闭喵')
+            return True
+        return False
+
+    async def _send_switch_msg(self, msg: str, matcher: Matcher) -> None:
+        """根据配置发送图片或文本消息"""
+        if await utils.check_txt_to_img(config_data.event_check_txt_img):
+            await matcher.send(MessageSegment.image(await txt_to_img.txt_to_img(msg)))
+        else:
+            await matcher.finish(msg)
 
     async def usage(self, matcher: Matcher) -> None:
         """获取指令帮助"""
@@ -187,7 +242,7 @@ class Eventmonitor:
         else:
             await matcher.finish(utils.usage)
 
-    async def state(self, matcher: Matcher, event: GroupMessageEvent) -> None:
+    async def state(self, matcher: Matcher, event: GroupMessageEvent) -> bool:
         """指令开关"""
         gid = str(event.group_id)
         group_status: dict = await utils.load_current_config()
@@ -201,12 +256,19 @@ class Eventmonitor:
             await matcher.send(MessageSegment.image(await txt_to_img.txt_to_img(rely_msg)))
         else:
             await matcher.finish(rely_msg)
+        return True
 
     async def check_plugin(self) -> str | None:
         """检测插件更新"""
         try:
             await self.check_plugin_update()
-        except (HTTPStatusError, ConnectError, RequestError, TimeoutError, json.JSONDecodeError) as e:
+        except (
+            HTTPStatusError,
+            ConnectError,
+            RequestError,
+            TimeoutError,
+            json.JSONDecodeError,
+        ) as e:
             logger.exception('检查更新时发生未处理的异常')
             return f'检查更新失败: {e}'
 
@@ -242,7 +304,13 @@ class Eventmonitor:
             if not data or 'tag_name' not in data:
                 logger.error('获取版本数据无效')
                 return False
-        except (HTTPStatusError, ConnectError, RequestError, TimeoutError, json.JSONDecodeError) as e:
+        except (
+            HTTPStatusError,
+            ConnectError,
+            RequestError,
+            TimeoutError,
+            json.JSONDecodeError,
+        ) as e:
             logger.error(f'获取最新版本数据失败: {e}')
             raise
         current = str(version.parse(utils.current_version.lstrip('v')))
@@ -267,7 +335,13 @@ class Eventmonitor:
             if not data or 'tag_name' not in data:
                 logger.error('获取版本数据无效')
                 return False
-        except (HTTPStatusError, ConnectError, RequestError, TimeoutError, json.JSONDecodeError) as e:
+        except (
+            HTTPStatusError,
+            ConnectError,
+            RequestError,
+            TimeoutError,
+            json.JSONDecodeError,
+        ) as e:
             logger.error(f'获取最新版本数据失败: {e}')
             raise
         current = str(version.parse(utils.current_version.lstrip('v')))
