@@ -57,7 +57,7 @@ class Utils:
         }
         self.g_temp = {}
         self.chuo_CD_dir = {}
-        self.current_version = 'v0.4.8'
+        self.current_version = 'v0.4.9'
         self.config_path: Path = store.get_plugin_config_dir()
         self.data_address: Path = self.config_path / 'config.json'
         self.release_url = 'https://api.github.com/repos/Reversedeer/nonebot_plugin_eventmonitor/releases/latest'
@@ -149,6 +149,12 @@ class Utils:
                 if key not in template:
                     del current_group[key]
         return config
+
+    async def remove_group_config(self, gid: str) -> None:
+        """删除指定群的配置"""
+        if gid in self.g_temp:
+            del self.g_temp[gid]
+            await self.write_group_data(self.g_temp)
 
     @staticmethod
     async def check_chuo(g_temp: dict, gid: str) -> bool:

@@ -86,10 +86,18 @@ class Eventmonitor:
         matcher: Matcher,
         event: GroupDecreaseNoticeEvent,
         bot: Bot,
-    ) -> None:
+    ) -> bool:
         """退群事件"""
+        gid = str(event.group_id)
+        # 检查 bot 是否还在群，不在则删除配置
+        group_list = await bot.get_group_list()
+        group_ids = {str(g['group_id']) for g in group_list}
+        if gid not in group_ids:
+            await utils.remove_group_config(gid)
+            return False
+
         if not (await utils.check_del_user(utils.g_temp, str(event.group_id))):
-            return
+            return False
         user_id: int = event.user_id
         member_info: dict = await bot.get_stranger_info(user_id=user_id)
         nickname: str = member_info.get('nickname', '未知昵称')
@@ -98,17 +106,18 @@ class Eventmonitor:
             await matcher.send(MessageSegment.image(await txt_to_img.txt_to_img(str(rely_msg))), at_sender=True)
         else:
             await matcher.finish(rely_msg)
+        return True
 
     async def add_user(
         self,
         matcher: Matcher,
         event: GroupIncreaseNoticeEvent,
         bot: Bot,
-    ) -> None:
+    ) -> bool:
         """入群事件"""
         await utils.config_check()
         if not (await utils.check_add_user(utils.g_temp, str(event.group_id))):
-            return
+            return False
         bot_qq = int(bot.self_id)
         user_id: int = event.user_id
         group_id: int = event.group_id
@@ -119,38 +128,41 @@ class Eventmonitor:
             await matcher.send(MessageSegment.image(await txt_to_img.txt_to_img(str(rely_msg))), at_sender=True)
         else:
             await matcher.finish(rely_msg)
+        return True
 
     async def admin_chance(
         self,
         matcher: Matcher,
         event: GroupAdminNoticeEvent,
         bot: Bot,
-    ) -> None:
+    ) -> bool:
         """管理员变动事件"""
         if not (await utils.check_admin(utils.g_temp, str(event.group_id))):
-            return
+            return False
         bot_qq = int(bot.self_id)
         rely_msg: str = await message.admin_changer(event.sub_type, event.user_id, bot_qq)
         if await utils.check_txt_to_img(config_data.event_check_txt_img):
             await matcher.send(MessageSegment.image(await txt_to_img.txt_to_img(rely_msg)), at_sender=True)
         else:
             await matcher.finish(rely_msg)
+        return True
 
     async def hongbao(
         self,
         matcher: Matcher,
         event: LuckyKingNotifyEvent,
         bot: Bot,
-    ) -> None:
+    ) -> bool:
         """红包运气王事件"""
         if not (await utils.check_red_package(utils.g_temp, str(event.group_id))):
-            return
+            return False
         bot_qq = int(bot.self_id)
         rely_msg = await message.rad_package_change(event.target_id, bot_qq)
         if await utils.check_txt_to_img(config_data.event_check_txt_img):
             await matcher.send(MessageSegment.image(await txt_to_img.txt_to_img(rely_msg)), at_sender=True)
         else:
             await matcher.finish(rely_msg)
+        return True
 
     async def switch(
         self,
